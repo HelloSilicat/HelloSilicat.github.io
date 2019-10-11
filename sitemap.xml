@@ -4,6 +4,17 @@
   
   <url>
     <loc>https://www.example.com/</loc>
+    <lastmod>2019-10-10T12:31:14+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.example.com/post/</loc>
+    <lastmod>2019-10-10T12:31:14+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.example.com/post/confusion/</loc>
+    <lastmod>2019-10-10T12:31:14+08:00</lastmod>
   </url>
   
   <url>
