@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Black &amp; Light</title>
-    <link>https://www.hellosilicat.github.io/post/</link>
+    <link>https://hellosilicat.github.io/post/</link>
     <description>Recent content in Posts on Black &amp; Light</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Thu, 10 Oct 2019 12:31:14 +0800</lastBuildDate>
     
-	<atom:link href="https://www.hellosilicat.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://hellosilicat.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>混淆矩阵与性能度量</title>
-      <link>https://www.hellosilicat.github.io/post/confusion/</link>
+      <link>https://hellosilicat.github.io/post/confusion/</link>
       <pubDate>Thu, 10 Oct 2019 12:31:14 +0800</pubDate>
       
-      <guid>https://www.hellosilicat.github.io/post/confusion/</guid>
+      <guid>https://hellosilicat.github.io/post/confusion/</guid>
       <description>在有监督分类学习中，混淆矩阵(confusion matrix)可用来描述模型在数据集上的预测状况，如针对$k$分类问题，混淆矩阵$C$为$k$阶方阵，其中$C_{i,j}(i,j\le k)$表示实际类别为$i$而模型预测类别为$j$的样本数；直观如下图所示。
 在混淆矩阵的基础上，我们可以定义各种度量用以评估模型性能，本文将介绍：准确率(accuracy)、精确率P(precision)、召回率R(recall)、F1值、P-R曲线与BEP(break-even point)、ROC曲线与AUC。
 以二分类问题为例，类别包含正类$P$、负类$N$，其混淆矩阵如下图所示。其中：
