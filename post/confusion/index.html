@@ -497,7 +497,7 @@ MathJax.Hub.Config({
 
 <p>如下图，当模型A的P-R曲线包含模型B的P-R曲线时，可认为A的性能更佳，如Model2优于Model1，然而P-R曲线也会出现交叉，此时可根据模型的BEP来判断，如Model3的BEP大于Model2的BEP(处于右上方)，则认为Model3的性能优于Model2。</p>
 
-<p><img src="http://m.qpic.cn/psb?/V12HCzzo2MbQyJ/kvjnFIOdRTEL0AZYpn1fScgJ.fATW*gQf4EYNqTW6rw!/b/dMUAAAAAAAAA&amp;bo=RAMkAgAAAAADF1M!&amp;rf=viewer_4" alt="confusion-2-class" /></p>
+<p><img src="http://m.qpic.cn/psb?/V12HCzzo2MbQyJ/kvjnFIOdRTEL0AZYpn1fScgJ.fATW*gQf4EYNqTW6rw!/b/dMUAAAAAAAAA&amp;bo=RAMkAgAAAAADF1M!&amp;rf=viewer_4" alt="PRCurve" /></p>
 
 <hr />
 
@@ -525,9 +525,7 @@ $$FPR=\frac{FP}{TN+FP}$$</p>
 
 <p>现实任务中，ROC曲线是离散的，如下图，一种绘制方法为首先将样本按照预测结果或中间值进行排序，然后<u>依次将每个样本划分为正例</u>，设正样本个数为$m^+$，负样本个数为$m-$，前一个标记点坐标为$(x,y)$，当前样本实际若为正例，则绘制$(x,y+\frac{1}{m^+})$，当前样本实际若为负例，则绘制$(x+\frac{1}{m^-},y)$，以此类推，ROC曲线必经过$(0,0)$点和$(1,1)$点，分别对应全部预测负类和全部预测正类的情况。</p>
 
-<div style="align:center">
-<img src="http://m.qpic.cn/psb?/V12HCzzo2MbQyJ/32dRw.FXL65paqBPkqsVnPtVv*mzMMMNFHd6Obm4BY4!/b/dLYAAAAAAAAA&bo=rgJDAgAAAAADB88!&rf=viewer_4" width=500 height=400>
-</div>
+<p><img src="http://m.qpic.cn/psb?/V12HCzzo2MbQyJ/32dRw.FXL65paqBPkqsVnPtVv*mzMMMNFHd6Obm4BY4!/b/dLYAAAAAAAAA&amp;bo=rgJDAgAAAAADB88!&amp;rf=viewer_4" alt="ROcCurve" /></p>
 
 <p>同样，当一个模型的ROC曲线包含包含另一个模型的ROC曲线时(所有点在左上方)，可认为该模型更优，然而面对ROC曲线的情况，需要引入AUC值来衡量模型好坏，AUC越大，说明模型性能更优。</p>
 
