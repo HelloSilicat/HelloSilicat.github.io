@@ -20,10 +20,10 @@
     <title>
       
       
-         Confusion Matrix and Measurement 
+         Linear Regression and Logistic Regression 
       
     </title>
-    <link rel="canonical" href="https://hellosilicat.github.io/post/confusion/">
+    <link rel="canonical" href="https://hellosilicat.github.io/post/2lr/">
 	<script type="text/javascript"
   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
@@ -488,87 +488,66 @@ MathJax.Hub.Config({
 
 
 <section id=content>
-  <h1 style="font-size:1.3em;border-bottom:1px solid #000"> Confusion Matrix and Measurement </h1>
+  <h1 style="font-size:1.3em;border-bottom:1px solid #000"> Linear Regression and Logistic Regression </h1>
   
   
     <div id=sub-header>
-      Oct 10, 2019 · 1 minute read
+      Oct 12, 2019 · 1 minute read
     </div>
   
 
   <div class="entry-content">
     
 
-<p>在有监督分类学习中，混淆矩阵(confusion matrix)可用来描述模型在数据集上的预测状况，如针对$k$分类问题，混淆矩阵$C$为$k$阶方阵，其中$C_{i,j}(i,j\le k)$表示实际类别为$i$而模型预测类别为$j$的样本数；在混淆矩阵的基础上，我们可以定义各种度量用以评估模型性能，本文将介绍：<strong>准确率</strong>(accuracy)、<strong>精确率</strong>P(precision)、<strong>召回率</strong>R(recall)、<strong>F1值</strong>、<strong>P-R曲线与BEP</strong>(break-even point)、<strong>ROC曲线与AUC</strong>。</p>
+<h3 id="1-线性回归-单变量">1. 线性回归(单变量)</h3>
 
-<p>以二分类问题为例，类别包含正类$P$、负类$N$，其混淆矩阵如下图所示。其中：</p>
+<h4 id="优化目标"><strong>优化目标：</strong></h4>
 
-<ul>
-<li>$TP$：实际为正类且预测为正类的样本数</li>
-<li>$FN$：实际为正类而预测为负类的样本数</li>
-<li>$FP$：实际为负类而预测为正类的样本数</li>
-<li>$TN$：实际为负类而预测为负类的样本数</li>
-</ul>
+<p>以均方误差为度量，损失函数定义为$E=\sum_{i=1}^n(y_i-wx_i-b)^2$，优化目标为：$\min\limits_{(w,b)} E $</p>
 
-<p><img src="http://m.qpic.cn/psb?/V12HCzzo2MbQyJ/nx1iJNnRCVzYYh70pFM8zlBg4a4EfzzJ3KbdMhwcsYA!/b/dD4BAAAAAAAA&amp;bo=pAGdAKQBnQADCSw!&amp;rf=viewer_4" alt="confusion-2-class" /></p>
+<h4 id="求解"><strong>求解：</strong></h4>
 
-<hr />
+<p>求导得：$$\frac{\partial E}{\partial w}=2\big(w\sum_{i=1}^nx_i^2-\sum_{i=1}^n(y_i-b)x_i\big)$$ $$\frac{\partial E}{\partial b}=2\big(nb-\sum_{i=1}^n(y_i-wx_i)\big)$$</p>
 
-<p><strong>准确率Accuracy</strong>指在所有样本中模型预测正确的比例，即：$$Accuracy=\frac{TP+TN}{TP+FN+FP+TN}$$</p>
+<p>令偏导为零得(其中$\overline x = \frac{1}{n}x_i$)：$$w=\frac{\sum_{i=1}^ny_i(x_i-\overline x)}{\sum_{i=1}^nx_i^2-\frac{1}{n}(\sum_{i=1}^nx_i)^2}$$ $$b=\frac{1}{n}\sum_{i=1}^n(y_i-wx_i)$$</p>
 
 <hr />
 
-<p>在类别不均衡问题中，准确率不能很好的度量性能，例如在99个正类和1个负类的数据集中，即使盲猜正类也能获得很高的准确率，然而这样的模型不具有泛化性，因此需要同时考虑精确率和召回率。</p>
+<h3 id="2-线性回归-多变量">2. 线性回归(多变量)</h3>
 
-<p><strong>精确率P</strong>指在<u>预测为正类的样本</u>中预测正确的比例，即：$$Precision=\frac{TP}{TP+FP}$$</p>
+<h4 id="优化目标-1"><strong>优化目标：</strong></h4>
 
-<p><strong>召回率R</strong>指在<u>实际为正类的样本</u>中预测正确的比例，即：$$Recall=\frac{TP}{TP+FN}$$</p>
+<p>令$w= (w_{original};b), X=(X_{original};1)$，损失函数定义为$E=(y-Xw)^T(y-Xw)$，优化目标为:$\min\limits_w E$</p>
 
-<p>如何理解精确率和召回率？西瓜书中有一个例子：你去买西瓜，精确率关注你挑的瓜中有多少比例是好瓜，而召回率更关注有多少比例的好瓜被你挑了出来。</p>
+<h4 id="求解-仍然是凸函数-矩阵求导后置零计算参数"><strong>求解：</strong>仍然是凸函数，矩阵求导后置零计算参数。</h4>
 
-<hr />
+<p>求导得：$$\frac{\partial E}{\partial w} = 2X^T(Xw - y)$$</p>
 
-<p>精确率与召回率是负相关的，精确率高时往往召回率会降低，反之亦然。如何综合两者去考量一个模型？P-R曲线与BEP便是方法之一。</p>
-
-<p><strong>P-R曲线</strong>横轴是召回率，纵轴是精确率，<strong>BEP</strong>(break-even point)是指曲线上横纵坐标相等的点，可以认为是平衡点。</p>
-
-<p>如何绘制P-R曲线？对于一个样本集合，根据模型结果或中间值对样本进行排序，靠前的样本有更大概率被分为正类；之后逐个样本作为阈值，比该样本靠前的预测为正类，其余为负类，每次计算Precision和Recall，这样得到一系列二维点，绘制即可得到该曲线，通常情况下曲线为离散状，随数据集规模增加而更平滑。</p>
-
-<p>如下图，当模型A的P-R曲线包含模型B的P-R曲线时，可认为A的性能更佳，如Model2优于Model1，然而P-R曲线也会出现交叉，此时可根据模型的BEP来判断，如Model3的BEP大于Model2的BEP(处于右上方)，则认为Model3的性能优于Model2。</p>
-
-<p><img src="http://m.qpic.cn/psb?/V12HCzzo2MbQyJ/WbY0EFl9wDm1lwsjLSXL1iKXiPOZuWB0lGckxP5h*0k!/b/dLYAAAAAAAAA&amp;bo=pAETAQAAAAADB5U!&amp;rf=viewer_4" alt="PRCurve" /></p>
+<p>令导数为零($X^TX$为满秩矩阵或正定矩阵时，否则无解或多解)得：$$w=(X^TX)^{-1}X^Ty$$</p>
 
 <hr />
 
-<p>通过P-R曲线来综合考虑精确率和召回率难免比较麻烦，另一个相对简单但有效的方式是计算F1值，F1值越大，模型性能越好。</p>
+<h3 id="3-逻辑斯蒂回归">3. 逻辑斯蒂回归</h3>
 
-<p><strong>F1-Score</strong>是精确率P和召回率R的调和平均数，即：$$\frac{1}{F1}=\frac{1}{2}(\frac{1}{P}+\frac{1}{R})$$</p>
+<h4 id="优化目标-2"><strong>优化目标：</strong></h4>
 
-<p>当存在多个混淆矩阵(多次训练或多个数据集等产生)时，F1值可分为macro-F1和micro-F1，两者区别在于粒度不同。</p>
+<p>令$w=(w_{original};b),x_i=(x_i;1)$，在逻辑斯蒂回归中，$h(x_i)=\frac{1}{1+e^{-(w^Tx_i)}}$将线性回归的结果映射到$(0,1)$上(Logisitic Distribution)，其值可视作样本为正类$1$的概率(置信度)；若$p(y_i|x_i)$表示样本$x_i$被预测正确的概率，则可重写为：$p(y_i|x_i)=h(x_i)^{y_i}· (1-h(x_i))^{1-y_i}$。</p>
 
-<p><strong>macro-F1</strong>是指先计算出每个混淆矩阵的P和R，得到平均值后再计算F1值；</p>
+<p>假设样本之间独立，则样本集的似然函数为$\prod _{i=1}^nh(x_i)^{y_i}· (1-h(x_i))^{1-y_i}$，对数变换后得：$$L(w)=\sum _{i=1}^n y_i log\big(h(x_i)\big) +(1-y_i)log\big(1-h(x_i)\big)$$
+由极大似然法，优化目标为：$\min\limits_w (-L)$</p>
 
-<p><strong>micro-F1</strong>是指先计算每个混淆矩阵的TP/FN/FP，得到平均值后计算P和R，最终再计算F1值；</p>
+<h4 id="求解-似然函数可通过凸优化的方式求解-这里采用梯度下降法"><strong>求解</strong>：似然函数可通过凸优化的方式求解，这里采用梯度下降法。</h4>
 
-<p>不同的业务场景对精确率和召回率的要求是不同的，例如推荐系统中更关注推荐的东西是用户喜欢的，即更关注精确率，此时可通过加权F1值来评估模型。</p>
+<p>不妨设$z = w^Tx_i$，对于参数$w_j$，计算偏导为：
+\begin{equation}\begin{split}
+\frac{\partial{(-L)}}{\partial w_j}&amp;=-\sum _{i=1}^n x_i^j·\frac{e^{-z}}{(1+e^{-z})^2} · \big( \frac{y _i}{h(x_i)} - \frac{1-y _i}{1-h(x_i)}  \big) \\<br />
+&amp;=-\sum _{i=1}^n x_i^j·\frac{e^{-z}}{(1+e^{-z})^2} · \big( y _i(1+e^{-z}) - \frac{(1-y _i)(1+e^{-z})}{e^{-z}} \big)\\<br />
+&amp; = -\sum _{i=1}^n x_i^j·\frac{e^{-z}}{1+e^{-z}} · (y _i - \frac{1-y _i}{e^{-z}}) \\<br />
+&amp; = -\sum _{i=1}^n x_i^j· \big[  (1-h(x_i))y_i - h(x_i)(1-y _i)  \big] \\<br />
+&amp; = \sum _{i=1}^n x_i^j (h(x_i)-y_i)
+\end{split}\end{equation}</p>
 
-<p><strong>加权F1-Score</strong>通过调整F1计算公式P、R系数来改变二者的重要程度，即：$$F_\beta=\frac{1}{1+\beta^2}(\frac{1}{P}+\frac{\beta^2}{R})$$</p>
-
-<p>当$\beta=1$时退化成普通F1，当$\beta&gt;1$时更关注召回率R，当$\beta&lt;1$时更关注精确率P(可分别计算P、R的偏导系数，越大说明该因子影响越大)。</p>
-
-<hr />
-
-<p>与P-R曲线类似的是ROC(Receiver Operating Characteristic)曲线，也是先对样本进行排序，按此顺序逐片段作为正例进行预测，每次计算两个值，然后绘制曲线，不过ROC曲线的横轴是<strong>假阳率FPR</strong>(False Positive Rate)，纵轴为<strong>真阳率TPR</strong>(True Positive Rate)，其定义为：
-$$TPR=\frac{TP}{TP+FN}$$
-$$FPR=\frac{FP}{TN+FP}$$</p>
-
-<p>现实任务中，ROC曲线是离散的，如下图，一种绘制方法为首先将样本按照预测结果或中间值进行排序，然后<u>依次将每个样本划分为正例</u>，设正样本个数为$m^+$，负样本个数为$m-$，前一个标记点坐标为$(x,y)$，当前样本实际若为正例，则绘制$(x,y+\frac{1}{m^+})$，当前样本实际若为负例，则绘制$(x+\frac{1}{m^-},y)$，以此类推，ROC曲线必经过$(0,0)$点和$(1,1)$点，分别对应全部预测负类和全部预测正类的情况。</p>
-
-<p><img src="http://m.qpic.cn/phttp://m.qpic.cn/psb?/V12HCzzo2MbQyJ/AivCkOhAsUwnSqCSdz7q9GgOSdk2m*tfLAlDbsI7ueo!/b/dL4AAAAAAAAA&amp;bo=pAFiAQAAAAADB.Q!&amp;rf=viewer_4sb?/V12HCzzo2MbQyJ/RJlfBDDKwTgwQrD.7ALx9hkpcI4JHcg6ZVhshjOrivE!/b/dLYAAAAAAAAA&amp;bo=4AGVAQAAAAADB1c!&amp;rf=viewer_4" alt="ROcCurve" /></p>
-
-<p>同样，当一个模型的ROC曲线包含包含另一个模型的ROC曲线时(所有点在左上方)，可认为该模型更优，然而面对ROC曲线的情况，需要引入AUC值来衡量模型好坏，AUC越大，说明模型性能更优。</p>
-
-<p><strong>AUC</strong>(Area Under ROC Curve)指ROC曲线下方的面积，将$x_{i}$ 按照大小顺序排列，AUC计算公式为(其中$m$指样本集大小)：$$AUC=\frac{1}{2}\sum_{i=1}^{m-1}(x_{i+1}-x_i)(y_i+y_{i+1})$$</p>
+<p>若学习率为$\alpha$，则每次迭代后：$$w _j = w _j - \alpha ·  \frac{\partial{(-L)}}{\partial w_j}$$</p>
 
 <hr />
 
@@ -576,14 +555,15 @@ $$FPR=\frac{FP}{TN+FP}$$</p>
 
 <ol>
 <li>《机器学习》，周志华，清华大学出版社，2017</li>
+<li>《统计学习方法》，李航，清华大学出版社，2016</li>
 </ol>
 
   </div>
 
   <div id=links>
     
+      <a class="basic-alignment left" href="https://hellosilicat.github.io/post/confusion/">&laquo; Confusion Matrix and Measurement</a>
     
-      <a class="basic-alignment left" href="https://hellosilicat.github.io/post/2lr/">Linear Regression and Logistic Regression &raquo;</a>
     
   </div>
 </section>

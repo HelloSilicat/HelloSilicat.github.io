@@ -56,12 +56,21 @@ MathJax.Hub.Config({
   }
 
   body {
-    font-family:'Open Sans', 'Myriad Pro', Myriad, sans-serif;
+    font-family:'KaTeX_Main','Times New Roman', 'Open Sans', 'Myriad Pro', Myriad, sans-serif;
     font-size:17px;
-    line-height:160%;
+    line-height:140%;
     color:#1d1313;
     max-width:700px;
     margin:auto;
+	padding:0px;
+  }
+  
+  table {
+    display: table;
+    border-collapse: separate;
+    border-spacing: 2px;
+    border-color: black;
+	border:1px;
   }
 
   p {
@@ -73,7 +82,11 @@ MathJax.Hub.Config({
   }
 
   img {
-    margin: 10px auto 10px auto;
+    border: 1px solid #ddd;
+	border-radius: 4px;
+	padding: 1px;
+	box-shadow: 0 0 2px 1px rgba(0,0,0,0.5);
+    margin: 15px auto 15px auto;
     max-width: 100%;
     display: block;
   }
@@ -146,7 +159,7 @@ MathJax.Hub.Config({
   }
 
   .heading,.serif,h1,h2,h3 {
-    font-family:"Old Standard TT",serif;
+    font-family:"KaTeX_Main","Times New Roman","Old Standard TT",serif;
   }
 
   strong {
@@ -168,7 +181,7 @@ MathJax.Hub.Config({
   blockquote {
     font-family:"Old Standard TT",serif;
     text-align:center;
-    padding:50px;
+    padding:10px;
   }
 
   blockquote p {
@@ -186,12 +199,13 @@ MathJax.Hub.Config({
   blockquote:after {
     content:'\201D';
   }
+  
 
   hr {
-    width:40%;
+    width:100%;
     height: 1px;
-    background:#403c3b;
     margin: 25px auto;
+	border-top:1px dashed grey;
   }
 
   h1 {
@@ -203,8 +217,10 @@ MathJax.Hub.Config({
   }
 
   h3 {
-    font-size:22px;
+    font-size:1.3em;
+	font-weight: bold;
     margin-top:18px;
+	margin-bottom:5px;
   }
 
   h1 a,h2 a,h3 a {
@@ -225,12 +241,16 @@ MathJax.Hub.Config({
   }
 
   #nav h1 a {
-    font-size:35px;
+    font-size:1em;
     color:#1d1313;
-    line-height:120%;
+    line-height:100%;
   }
-
-  .posts_listing a,#nav a {
+	
+  .posts_listing a {
+    border-bottom:1px dashed grey;
+	text-decoration: none;
+  }
+  #nav a {
     text-decoration: none;
   }
 
@@ -258,7 +278,7 @@ MathJax.Hub.Config({
     text-align:left;
     width:100%;
     font-size:15px;
-    padding:60px 0 80px;
+    padding:0px 0 80px;
   }
 
   #content h1,#content h2 {
@@ -270,8 +290,23 @@ MathJax.Hub.Config({
   }
 
   #content .entry-content {
+  line-height:120%;
     margin-top:15px;
   }
+  
+  .entry-content p {
+    margin-top: 0;
+    margin-bottom: 2px;
+    text-indent: 2rem;
+  }
+  
+	.entry-content blockquote {
+		text-indent: 0rem;
+	}
+
+	.entry-content ul, ol, dl {
+		margin-left: 1rem;
+	}
 
   #content time {
     margin-left:3px;
@@ -293,14 +328,20 @@ MathJax.Hub.Config({
     margin:0 0 25px 15px;
   }
 
-  .posts_listing li a:hover,#nav a:hover {
-    text-decoration: underline;
+  .posts_listing td a:hover{
+    text-decoration: none;
+	border-bottom: none;
+  }
+  
+  #nav a:hover {
+    text-decoration: none;
   }
 
   #nav {
     text-align:center;
     position:static;
-    margin-top:60px;
+    margin-top:0px;
+	padding-top:0px;
   }
 
   #nav ul {
@@ -433,12 +474,12 @@ MathJax.Hub.Config({
 
   <body>
     <section id=nav>
-      <h1><a href="https://hellosilicat.github.io/">Black &amp; Light</a></h1>
+      <h1><a href="https://hellosilicat.github.io/">Mono</a></h1>
       <ul>
         
           <li><a href="https://hellosilicat.github.io/">About</a></li>
         
-          <li><a href="https://hellosilicat.github.io/posts/">Posts</a></li>
+          <li><a href="https://hellosilicat.github.io/">Posts</a></li>
         
           <li><a href="https://hellosilicat.github.io/">Resume</a></li>
         

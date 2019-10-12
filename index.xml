@@ -1,24 +1,41 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Black &amp; Light</title>
+    <title>Mono</title>
     <link>https://hellosilicat.github.io/</link>
-    <description>Recent content on Black &amp; Light</description>
+    <description>Recent content on Mono</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 10 Oct 2019 12:31:14 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 12 Oct 2019 14:37:05 +0800</lastBuildDate>
     
 	<atom:link href="https://hellosilicat.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>混淆矩阵与性能度量</title>
+      <title>Linear Regression and Logistic Regression</title>
+      <link>https://hellosilicat.github.io/post/2lr/</link>
+      <pubDate>Sat, 12 Oct 2019 14:37:05 +0800</pubDate>
+      
+      <guid>https://hellosilicat.github.io/post/2lr/</guid>
+      <description>1. 线性回归(单变量) 优化目标： 以均方误差为度量，损失函数定义为$E=\sum_{i=1}^n(y_i-wx_i-b)^2$，优化目标为：$\min\limits_{(w,b)} E $
+求解： 求导得：$$\frac{\partial E}{\partial w}=2\big(w\sum_{i=1}^nx_i^2-\sum_{i=1}^n(y_i-b)x_i\big)$$ $$\frac{\partial E}{\partial b}=2\big(nb-\sum_{i=1}^n(y_i-wx_i)\big)$$
+令偏导为零得(其中$\overline x = \frac{1}{n}x_i$)：$$w=\frac{\sum_{i=1}^ny_i(x_i-\overline x)}{\sum_{i=1}^nx_i^2-\frac{1}{n}(\sum_{i=1}^nx_i)^2}$$ $$b=\frac{1}{n}\sum_{i=1}^n(y_i-wx_i)$$
+2. 线性回归(多变量) 优化目标： 令$w= (w_{original};b), X=(X_{original};1)$，损失函数定义为$E=(y-Xw)^T(y-Xw)$，优化目标为:$\min\limits_w E$
+求解：仍然是凸函数，矩阵求导后置零计算参数。 求导得：$$\frac{\partial E}{\partial w} = 2X^T(Xw - y)$$
+令导数为零($X^TX$为满秩矩阵或正定矩阵时，否则无解或多解)得：$$w=(X^TX)^{-1}X^Ty$$
+3. 逻辑斯蒂回归 优化目标： 令$w=(w_{original};b),x_i=(x_i;1)$，在逻辑斯蒂回归中，$h(x_i)=\frac{1}{1+e^{-(w^Tx_i)}}$将线性回归的结果映射到$(0,1)$上(Logisitic Distribution)，其值可视作样本为正类$1$的概率(置信度)；若$p(y_i|x_i)$表示样本$x_i$被预测正确的概率，则可重写为：$p(y_i|x_i)=h(x_i)^{y_i}· (1-h(x_i))^{1-y_i}$。
+假设样本之间独立，则样本集的似然函数为$\prod _{i=1}^nh(x_i)^{y_i}· (1-h(x_i))^{1-y_i}$，对数变换后得：$$L(w)=\sum _{i=1}^n y_i log\big(h(x_i)\big) +(1-y_i)log\big(1-h(x_i)\big)$$ 由极大似然法，优化目标为：$\min\limits_w (-L)$
+求解：似然函数可通过凸优化的方式求解，这里采用梯度下降法。 不妨设$z = w^Tx_i$，对于参数$w_j$，计算偏导为： \begin{equation}\begin{split} \frac{\partial{(-L)}}{\partial w_j}&amp;amp;=-\sum _{i=1}^n x_i^j·\frac{e^{-z}}{(1+e^{-z})^2} · \big( \frac{y _i}{h(x_i)} - \frac{1-y _i}{1-h(x_i)} \big) \\
+&amp;amp;=-\sum _{i=1}^n x_i^j·\frac{e^{-z}}{(1+e^{-z})^2} · \big( y _i(1+e^{-z}) - \frac{(1-y _i)(1+e^{-z})}{e^{-z}} \big)\\</description>
+    </item>
+    
+    <item>
+      <title>Confusion Matrix and Measurement</title>
       <link>https://hellosilicat.github.io/post/confusion/</link>
       <pubDate>Thu, 10 Oct 2019 12:31:14 +0800</pubDate>
       
       <guid>https://hellosilicat.github.io/post/confusion/</guid>
-      <description>在有监督分类学习中，混淆矩阵(confusion matrix)可用来描述模型在数据集上的预测状况，如针对$k$分类问题，混淆矩阵$C$为$k$阶方阵，其中$C_{i,j}(i,j\le k)$表示实际类别为$i$而模型预测类别为$j$的样本数；直观如下图所示。
-在混淆矩阵的基础上，我们可以定义各种度量用以评估模型性能，本文将介绍：准确率(accuracy)、精确率P(precision)、召回率R(recall)、F1值、P-R曲线与BEP(break-even point)、ROC曲线与AUC。
+      <description> 在有监督分类学习中，混淆矩阵(confusion matrix)可用来描述模型在数据集上的预测状况，如针对$k$分类问题，混淆矩阵$C$为$k$阶方阵，其中$C_{i,j}(i,j\le k)$表示实际类别为$i$而模型预测类别为$j$的样本数；在混淆矩阵的基础上，我们可以定义各种度量用以评估模型性能，本文将介绍：准确率(accuracy)、精确率P(precision)、召回率R(recall)、F1值、P-R曲线与BEP(break-even point)、ROC曲线与AUC。
 以二分类问题为例，类别包含正类$P$、负类$N$，其混淆矩阵如下图所示。其中：
  $TP$：实际为正类且预测为正类的样本数 $FN$：实际为正类而预测为负类的样本数 $FP$：实际为负类而预测为正类的样本数 $TN$：实际为负类而预测为负类的样本数  准确率Accuracy指在所有样本中模型预测正确的比例，即：$$Accuracy=\frac{TP+TN}{TP+FN+FP+TN}$$
 在类别不均衡问题中，准确率不能很好的度量性能，例如在99个正类和1个负类的数据集中，即使盲猜正类也能获得很高的准确率，然而这样的模型不具有泛化性，因此需要同时考虑精确率和召回率。
@@ -41,8 +58,7 @@ micro-F1是指先计算每个混淆矩阵的TP/FN/FP，得到平均值后计算P
 现实任务中，ROC曲线是离散的，如下图，一种绘制方法为首先将样本按照预测结果或中间值进行排序，然后依次将每个样本划分为正例，设正样本个数为$m^+$，负样本个数为$m-$，前一个标记点坐标为$(x,y)$，当前样本实际若为正例，则绘制$(x,y+\frac{1}{m^+})$，当前样本实际若为负例，则绘制$(x+\frac{1}{m^-},y)$，以此类推，ROC曲线必经过$(0,0)$点和$(1,1)$点，分别对应全部预测负类和全部预测正类的情况。
 同样，当一个模型的ROC曲线包含包含另一个模型的ROC曲线时(所有点在左上方)，可认为该模型更优，然而面对ROC曲线的情况，需要引入AUC值来衡量模型好坏，AUC越大，说明模型性能更优。
 AUC(Area Under ROC Curve)指ROC曲线下方的面积，将$x_{i}$ 按照大小顺序排列，AUC计算公式为(其中$m$指样本集大小)：$$AUC=\frac{1}{2}\sum_{i=1}^{m-1}(x_{i+1}-x_i)(y_i+y_{i+1})$$
-参考资料：
- 《机器学习》，周志华，清华大学出版社，2017  </description>
+参考资料：  《机器学习》，周志华，清华大学出版社，2017  </description>
     </item>
     
   </channel>
