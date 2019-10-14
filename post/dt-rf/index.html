@@ -20,10 +20,10 @@
     <title>
       
       
-         Linear Regression and Logistic Regression 
+         Decision Tree and Random Forest 
       
     </title>
-    <link rel="canonical" href="https://hellosilicat.github.io/post/2lr/">
+    <link rel="canonical" href="https://hellosilicat.github.io/post/dt-rf/">
 	<script type="text/javascript"
   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
@@ -488,84 +488,69 @@ MathJax.Hub.Config({
 
 
 <section id=content>
-  <h1 style="font-size:1.3em;border-bottom:1px solid #000"> Linear Regression and Logistic Regression </h1>
+  <h1 style="font-size:1.3em;border-bottom:1px solid #000"> Decision Tree and Random Forest </h1>
   
   
     <div id=sub-header>
-      Oct 12, 2019 · 1 minute read
+      Oct 14, 2019 · 1 minute read
     </div>
   
 
   <div class="entry-content">
     
 
-<h3 id="1-线性回归-单变量">1. 线性回归(单变量)</h3>
+<h3 id="1-基础">1. 基础</h3>
 
-<h4 id="优化目标"><strong>优化目标：</strong></h4>
+<h4 id="信息熵-information-entropy-度量样本集合纯度-越小越纯-若当前样本集合-d-中第-i-类样本所占的比例为-p-i-i-1-2-k-则信息熵定义为"><strong>信息熵(information entropy)：</strong> 度量样本集合纯度，越小越纯；若当前样本集合$D$中第$i$类样本所占的比例为$p_i(i=1,2,&hellip;,K)$，则信息熵定义为：</h4>
 
-<p>以均方误差为度量，损失函数定义为$E=\sum_{i=1}^n(y_i-wx_i-b)^2$，优化目标为：$\min\limits_{(w,b)} E $</p>
+<p>$$Ent(D) = -\sum _{i=1}^K p_i logp_i$$</p>
 
-<h4 id="求解"><strong>求解：</strong></h4>
+<h4 id="属性信息熵-度量样本集合按照特定属性分割后的信息熵-若样本集合在属性取-v-值时的子集为-d-v-v-1-2-v-则属性信息熵定义为"><strong>属性信息熵：</strong>度量样本集合按照特定属性分割后的信息熵；若样本集合在属性取$v$值时的子集为$D^v(v=1,2,&hellip;,V)$，则属性信息熵定义为：</h4>
 
-<p>求导得：$$\frac{\partial E}{\partial w}=2\big(w\sum_{i=1}^nx_i^2-\sum_{i=1}^n(y_i-b)x_i\big)$$ $$\frac{\partial E}{\partial b}=2\big(nb-\sum_{i=1}^n(y_i-wx_i)\big)$$</p>
+<p>$$\sum _{v=1}^V \frac{|D^v|}{|D|}Ent(D^v)$$</p>
 
-<p>令偏导为零得(其中$\overline x = \frac{1}{n}x_i$)：$$w=\frac{\sum_{i=1}^ny_i(x_i-\overline x)}{\sum_{i=1}^nx_i^2-\frac{1}{n}(\sum_{i=1}^nx_i)^2}$$ $$b=\frac{1}{n}\sum_{i=1}^n(y_i-wx_i)$$</p>
+<h4 id="信息增益-度量样本集合根据特定属性-a-分割后信息熵降低水平-偏好类别数多的属性-信息增益越大-分割后纯度越大-定义为"><strong>信息增益：</strong>度量样本集合根据特定属性$a$分割后信息熵降低水平，偏好类别数多的属性，信息增益越大，分割后纯度越大，定义为：</h4>
 
-<hr />
+<p>$$Gain(D,a)=Ent(D) - \sum _{v=1}^V   \frac{|D^v|}{|D|}Ent(D^v)$$</p>
 
-<h3 id="2-线性回归-多变量">2. 线性回归(多变量)</h3>
+<h4 id="信息增益率-度量样本集合根据特定属性-a-分割后信息熵降低程度-偏好类别数较少的属性-信息增益率越大-分割后纯度越大-定义为"><strong>信息增益率：</strong>度量样本集合根据特定属性$a$分割后信息熵降低程度，偏好类别数较少的属性，信息增益率越大，分割后纯度越大，定义为：</h4>
 
-<h4 id="优化目标-1"><strong>优化目标：</strong></h4>
+<p>$$Gain-ratio(D,a) = \frac{Gain(D,a)}{-\sum _{v=1}^V \frac{|D^v|}{|D|} log\frac{|D^v|}{|D|} }$$</p>
 
-<p>令$w= (w_{original};b), X=(X_{original};1)$，损失函数定义为$E=(y-Xw)^T(y-Xw)$，优化目标为:$\min\limits_w E$</p>
+<h4 id="基尼系数-度量样本集合纯度-越小越纯-直观上代表从样本集合中抽出两个样本-它们类别不一致的概率-定义为"><strong>基尼系数：</strong>度量样本集合纯度，越小越纯(直观上代表从样本集合中抽出两个样本，它们类别不一致的概率)，定义为：</h4>
 
-<h4 id="求解-仍然是凸函数-矩阵求导后置零计算参数"><strong>求解：</strong>仍然是凸函数，矩阵求导后置零计算参数。</h4>
+<p>$$Gini(D) = 1 - \sum _{i=1}^K p_i^2$$</p>
 
-<p>求导得：$$\frac{\partial E}{\partial w} = 2X^T(Xw - y)$$</p>
+<h4 id="属性基尼系数-度量样本集合按照特定属性-a-分割后纯度-越小越纯-定义为"><strong>属性基尼系数：</strong>度量样本集合按照特定属性$a$分割后纯度，越小越纯，定义为：</h4>
 
-<p>令导数为零($X^TX$为满秩矩阵或正定矩阵时，否则无解或多解)得：$$w=(X^TX)^{-1}X^Ty$$</p>
+<p>$$Gini-index(D,a) = \sum _{v=1}^V \frac{|D^v|}{|D|}Gini(D^v)$$</p>
 
-<hr />
+<h3 id="2-决策树">2. 决策树</h3>
 
-<h3 id="3-逻辑斯蒂回归">3. 逻辑斯蒂回归</h3>
+<h4 id="id3-分类树-采取信息增益率作为最优化分标准"><strong>ID3</strong>：分类树，采取信息增益率作为最优化分标准；</h4>
 
-<h4 id="优化目标-2"><strong>优化目标：</strong></h4>
+<h4 id="c4-5-分类树-二分法离散化连续值-划分时-先选择信息增益高于平均水平的特征-再选择信息增益率最大的"><strong>C4.5</strong>：分类树，二分法离散化连续值，划分时，先选择信息增益高于平均水平的特征，再选择信息增益率最大的；</h4>
 
-<p>令$w=(w_{original};b),x_i=(x_i;1)$，在逻辑斯蒂回归中，$h(x_i)=\frac{1}{1+e^{-(w^Tx_i)}}$将线性回归的结果映射到$(0,1)$上(Logisitic Distribution)，其值可视作样本为正类$1$的概率(置信度)；若$p(y_i|x_i)$表示样本$x_i$被预测正确的概率，则可重写为：$p(y_i|x_i)=h(x_i)^{y_i}· (1-h(x_i))^{1-y_i}$。</p>
+<h4 id="cart-分类树-回归树-作为分类树时以属性基尼系数作为最优划分标准-作为回归树时参考-回归树-https-blog-csdn-net-weixin-40604987-article-details-79296427"><strong>CART</strong>：分类树/回归树，作为分类树时以属性基尼系数作为最优划分标准；作为回归树时参考<a href="https://blog.csdn.net/weixin_40604987/article/details/79296427">回归树</a></h4>
 
-<p>假设样本之间独立，则样本集的似然函数为$\prod _{i=1}^nh(x_i)^{y_i}· (1-h(x_i))^{1-y_i}$，对数变换后得：$$L(w)=\sum _{i=1}^n y_i log\big(h(x_i)\big) +(1-y_i)log\big(1-h(x_i)\big)$$
-由极大似然法，优化目标为：$\min\limits_w (-L)$</p>
+<h4 id="基本算法"><strong>基本算法</strong>：</h4>
 
-<h4 id="求解-似然函数可通过凸优化的方式求解-这里采用梯度下降法"><strong>求解</strong>：似然函数可通过凸优化的方式求解，这里采用梯度下降法。</h4>
+<p><img src="http://m.qpic.cn/psb?/V12HCzzo2MbQyJ/lEVEbRTjNgloFqDcAoGU*6LlCbgXU.6nhXkGKmq3qEE!/b/dFMBAAAAAAAA&amp;bo=NgKSAQAAAAADB4U!&amp;rf=viewer_4" alt="algorithm" /></p>
 
-<p>不妨设$z = w^Tx_i$，对于参数$w_j$，计算偏导为：
-\begin{equation}\begin{split}
-\frac{\partial{(-L)}}{\partial w_j}&amp;=-\sum _{i=1}^n x_i^j·\frac{e^{-z}}{(1+e^{-z})^2} · \big( \frac{y _i}{h(x_i)} - \frac{1-y _i}{1-h(x_i)}  \big) \\<br />
-&amp;=-\sum _{i=1}^n x_i^j·\frac{e^{-z}}{(1+e^{-z})^2} · \big( y _i(1+e^{-z}) - \frac{(1-y _i)(1+e^{-z})}{e^{-z}} \big)\\<br />
-&amp; = -\sum _{i=1}^n x_i^j·\frac{e^{-z}}{1+e^{-z}} · (y _i - \frac{1-y _i}{e^{-z}}) \\<br />
-&amp; = -\sum _{i=1}^n x_i^j· \big[  (1-h(x_i))y_i - h(x_i)(1-y _i)  \big] \\<br />
-&amp; = \sum _{i=1}^n x_i^j (h(x_i)-y_i)
-\end{split}\end{equation}</p>
+<h4 id="剪枝-预剪枝在构建决策树时评估是否会带来泛化性的提升而选择是否分隔-训练速度快但是容易欠拟合-后剪枝从构建的决策树自叶节点向上-若将叶节点与父节点合并会提升泛化性则进行合并"><strong>剪枝</strong>：预剪枝在构建决策树时评估是否会带来泛化性的提升而选择是否分隔，训练速度快但是容易欠拟合；后剪枝从构建的决策树自叶节点向上，若将叶节点与父节点合并会提升泛化性则进行合并；</h4>
 
-<p>若学习率为$\alpha$，则每次迭代后：$$w _j = w _j - \alpha ·  \frac{\partial{(-L)}}{\partial w_j}$$</p>
+<h3 id="3-随机森林">3. 随机森林</h3>
 
-<hr />
+<h4 id="bagging-bootstrap-aggregating-每次不放回采样m个样本进行训练-得到t个模型-分类则投票法-回归则平均法-bootstrap方法每次约能涵盖63-2-的原始样本-剩余的36-8-可用作包外估计"><strong>Bagging(Bootstrap Aggregating)</strong>：每次不放回采样m个样本进行训练，得到T个模型，分类则投票法，回归则平均法；Bootstrap方法每次约能涵盖63.2%的原始样本，剩余的36.8%可用作包外估计；</h4>
 
-<h4 id="参考资料">参考资料：</h4>
-
-<ol>
-<li>《机器学习》，周志华，清华大学出版社，2017</li>
-<li>《统计学习方法》，李航，清华大学出版社，2016</li>
-</ol>
+<h4 id="随机森林-基学习器是决策树-在bagging的基础上-每次划分特征时-先随机选择k个特征-然后在这些特征中选择最优的-最终投票产生结果"><strong>随机森林</strong>：基学习器是决策树，在Bagging的基础上，每次划分特征时，先随机选择k个特征，然后在这些特征中选择最优的，最终投票产生结果；</h4>
 
   </div>
 
   <div id=links>
     
-      <a class="basic-alignment left" href="https://hellosilicat.github.io/post/confusion/">&laquo; Confusion Matrix and Measurement</a>
+      <a class="basic-alignment left" href="https://hellosilicat.github.io/post/2lr/">&laquo; Linear Regression and Logistic Regression</a>
     
-    
-      <a class="basic-alignment left" href="https://hellosilicat.github.io/post/dt-rf/">Decision Tree and Random Forest &raquo;</a>
     
   </div>
 </section>

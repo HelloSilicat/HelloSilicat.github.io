@@ -6,10 +6,25 @@
     <description>Recent content on Kanata</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 12 Oct 2019 14:37:05 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 14 Oct 2019 14:04:29 +0800</lastBuildDate>
     
 	<atom:link href="https://hellosilicat.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Decision Tree and Random Forest</title>
+      <link>https://hellosilicat.github.io/post/dt-rf/</link>
+      <pubDate>Mon, 14 Oct 2019 14:04:29 +0800</pubDate>
+      
+      <guid>https://hellosilicat.github.io/post/dt-rf/</guid>
+      <description> 1. 基础 信息熵(information entropy)： 度量样本集合纯度，越小越纯；若当前样本集合$D$中第$i$类样本所占的比例为$p_i(i=1,2,&amp;hellip;,K)$，则信息熵定义为： $$Ent(D) = -\sum _{i=1}^K p_i logp_i$$
+属性信息熵：度量样本集合按照特定属性分割后的信息熵；若样本集合在属性取$v$值时的子集为$D^v(v=1,2,&amp;hellip;,V)$，则属性信息熵定义为： $$\sum _{v=1}^V \frac{|D^v|}{|D|}Ent(D^v)$$
+信息增益：度量样本集合根据特定属性$a$分割后信息熵降低水平，偏好类别数多的属性，信息增益越大，分割后纯度越大，定义为： $$Gain(D,a)=Ent(D) - \sum _{v=1}^V \frac{|D^v|}{|D|}Ent(D^v)$$
+信息增益率：度量样本集合根据特定属性$a$分割后信息熵降低程度，偏好类别数较少的属性，信息增益率越大，分割后纯度越大，定义为： $$Gain-ratio(D,a) = \frac{Gain(D,a)}{-\sum _{v=1}^V \frac{|D^v|}{|D|} log\frac{|D^v|}{|D|} }$$
+基尼系数：度量样本集合纯度，越小越纯(直观上代表从样本集合中抽出两个样本，它们类别不一致的概率)，定义为： $$Gini(D) = 1 - \sum _{i=1}^K p_i^2$$
+属性基尼系数：度量样本集合按照特定属性$a$分割后纯度，越小越纯，定义为： $$Gini-index(D,a) = \sum _{v=1}^V \frac{|D^v|}{|D|}Gini(D^v)$$
+2. 决策树 ID3：分类树，采取信息增益率作为最优化分标准； C4.5：分类树，二分法离散化连续值，划分时，先选择信息增益高于平均水平的特征，再选择信息增益率最大的； CART：分类树/回归树，作为分类树时以属性基尼系数作为最优划分标准；作为回归树时参考回归树 基本算法： 剪枝：预剪枝在构建决策树时评估是否会带来泛化性的提升而选择是否分隔，训练速度快但是容易欠拟合；后剪枝从构建的决策树自叶节点向上，若将叶节点与父节点合并会提升泛化性则进行合并； 3. 随机森林 Bagging(Bootstrap Aggregating)：每次不放回采样m个样本进行训练，得到T个模型，分类则投票法，回归则平均法；Bootstrap方法每次约能涵盖63.2%的原始样本，剩余的36.8%可用作包外估计； 随机森林：基学习器是决策树，在Bagging的基础上，每次划分特征时，先随机选择k个特征，然后在这些特征中选择最优的，最终投票产生结果； </description>
+    </item>
     
     <item>
       <title>Linear Regression and Logistic Regression</title>
