@@ -20,10 +20,10 @@
     <title>
       
       
-         Linear Regression and Logistic Regression 
+         Support Vector Machine 
       
     </title>
-    <link rel="canonical" href="https://hellosilicat.github.io/post/2lr/">
+    <link rel="canonical" href="https://hellosilicat.github.io/post/svm/">
 	<script type="text/javascript"
   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
@@ -488,84 +488,78 @@ MathJax.Hub.Config({
 
 
 <section id=content>
-  <h1 style="font-size:1.3em;border-bottom:1px solid #000"> Linear Regression and Logistic Regression </h1>
+  <h1 style="font-size:1.3em;border-bottom:1px solid #000"> Support Vector Machine </h1>
   
   
     <div id=sub-header>
-      Oct 12, 2019 · 1 minute read
+      Oct 15, 2019 · 2 minute read
     </div>
   
 
   <div class="entry-content">
     
 
-<h3 id="1-线性回归-单变量">1. 线性回归(单变量)</h3>
-
-<h4 id="优化目标"><strong>优化目标：</strong></h4>
-
-<p>以均方误差为度量，损失函数定义为$E=\sum_{i=1}^n(y_i-wx_i-b)^2$，优化目标为：$\min\limits_{(w,b)} E $</p>
-
-<h4 id="求解"><strong>求解：</strong></h4>
-
-<p>求导得：$$\frac{\partial E}{\partial w}=2\big(w\sum_{i=1}^nx_i^2-\sum_{i=1}^n(y_i-b)x_i\big)$$ $$\frac{\partial E}{\partial b}=2\big(nb-\sum_{i=1}^n(y_i-wx_i)\big)$$</p>
-
-<p>令偏导为零得(其中$\overline x = \frac{1}{n}x_i$)：$$w=\frac{\sum_{i=1}^ny_i(x_i-\overline x)}{\sum_{i=1}^nx_i^2-\frac{1}{n}(\sum_{i=1}^nx_i)^2}$$ $$b=\frac{1}{n}\sum_{i=1}^n(y_i-wx_i)$$</p>
+<p>支持向量机(Support Vector Machine)既可以处理分类任务(SVC)，也可以处理回归任务(SVR)；既可以处理线性可分数据集(硬间隔SVM)，也能处理非线性可分数据集(软间隔SVM、核方法)。</p>
 
 <hr />
 
-<h3 id="2-线性回归-多变量">2. 线性回归(多变量)</h3>
+<h3 id="1-线性svm">1. 线性SVM</h3>
 
-<h4 id="优化目标-1"><strong>优化目标：</strong></h4>
+<p>对于二分类线性可分数据集（正类表示为+1，负类表示为-1），设直线为$wx+b=0$能够分离不同类的样本点($wx+b&gt;0$为正类，反之负类)，定义与直线距离最近的点$x _\alpha(\alpha=1,2,&hellip;)$为支持向量，注意$y _i(wx _i+b)$的符号可以表示分类正确性(正代表分类正确，负表示分类错误)，则线性SVM的优化目标为直线到支持向量的距离最大，即：
+$$\max \limits _{w,b} \frac{y _\alpha(wx _\alpha+b)}{||w||}$$
+$$s.t. \frac{y _i(wx _i +b)}{||w||} \ge \frac{y _\alpha (wx _\alpha +b)}{||w||}$$</p>
 
-<p>令$w= (w_{original};b), X=(X_{original};1)$，损失函数定义为$E=(y-Xw)^T(y-Xw)$，优化目标为:$\min\limits_w E$</p>
+<p>因为同比例改变$w,b$不影响直线位置/形状，所以若$y _\alpha(wx _ \alpha+b)=\lambda$，则$(\frac{1}{\lambda * y _ \alpha}w, \frac{1}{\lambda * y _\alpha}b)$也是解，因此不妨设$y          _\alpha (w x _\alpha +b)=1$，这样优化目标为(不等式两边同乘$|w|$)：
+$$\max \limits _{w,b} \frac{1}{||w||}$$
+$$s.t. y _i(wx _i +b) \ge 1$$</p>
 
-<h4 id="求解-仍然是凸函数-矩阵求导后置零计算参数"><strong>求解：</strong>仍然是凸函数，矩阵求导后置零计算参数。</h4>
+<p>为进行凸优化，$max \frac{1}{||w||}$可写成$min \frac{1}{2}||w||^2$，这样线性SVM最终的优化目标为：
+$$\min \limits _{w,b} \frac{1}{2}||w||^2$$
+$$s.t. y _i(wx _i +b) \ge 1$$</p>
 
-<p>求导得：$$\frac{\partial E}{\partial w} = 2X^T(Xw - y)$$</p>
+<p><a href="https://www.cnblogs.com/sddai/p/5728195.html">拉格朗日乘子法</a>对应的拉格朗日函数为：
+$$L(w,b,\alpha) = \frac{1}{2} ||w||^2 + \sum _{i=1}^n \alpha _i (1 - y _i (wx _i +b))$$</p>
 
-<p>令导数为零($X^TX$为满秩矩阵或正定矩阵时，否则无解或多解)得：$$w=(X^TX)^{-1}X^Ty$$</p>
+<p>简单写一下我对<a href="https://www.cnblogs.com/lijiankou/p/3308742.html">拉格朗日对偶性</a>的理解：原优化目标为凸函数，故对应的拉格朗日函数需求最小极值点，分别对未知参数求偏导等价于$\min \limits _{w,b} \max \limits _{\alpha} L(w,b,\alpha)$，$min$容易理解，为什么需要$max$呢，一旦存在某个$\alpha _i g(x)&gt; \alpha _{max}(x)$（g(x)是约束函数，小于等于零），那么$\alpha _{max}$就可以替换成$\alpha _{i}$从而使整个式子更小，算是节省了对$\alpha$求导的代价吧，拉格朗日对偶性是指在满足KKT条件后，上述极小极大问题等价于极大极小问题，即$$\max \limits _{\alpha} \min \limits _{w,b}  L(w,b,\alpha)$$</p>
+
+<p>先求$\min \limits _{w,b} L(w,b,\alpha)$令$L$关于$w,b$的偏导为零可得：
+$$w = \sum _{i=1}^n \alpha _i y _i x _i$$
+$$0 = \sum _{i=1}^n \alpha _i y_i$$</p>
+
+<p>代入拉格朗日函数得到：
+$$L(\alpha) = \sum _{i=1}^n \alpha _i - \frac{1}{2} \sum _{i=1}^n \sum _{j=1}^n \alpha _i \alpha _j y _i y _j (x _i ^T x_j)$$</p>
+
+<p>因此等价的对偶优化目标为：
+$$\max \limits _{\alpha} L(\alpha)$$
+$$s.t. \sum _{i=1}^n \alpha _i y_i = 0, \alpha _i \ge 0 $$</p>
+
+<p>同时满足KKT条件：
+$$\alpha _i \ge 0, \\\ y _i(w x _i  + b) - 1 \ge 0, \\\ \alpha _i (y _i(w x _i + b) - 1) = 0.$$</p>
+
+<p>最终：
+$$w = \sum _{i=1}^n \alpha _i y _i x _i$$
+$$b = \frac{1- y _j w^Tx _j}{y _j}，其中\alpha _j &gt; 0(根据KKT条件推导)$$</p>
+
+<p>观察到，$w$只和$\alpha _i \ne 0$的样本点有关，而根据KKT条件，这些样本点满足$y _i(w x _i  + b) = 1$，即支持向量，所以SVM模型在预测时仅和支持向量有关，这样的稀疏性大大降低了时间开销。</p>
 
 <hr />
 
-<h3 id="3-逻辑斯蒂回归">3. 逻辑斯蒂回归</h3>
+<h3 id="2-软间隔svm">2. 软间隔SVM</h3>
 
-<h4 id="优化目标-2"><strong>优化目标：</strong></h4>
+<p>对于非线性可分数据集，软间隔SVM允许部分样本点被分错，但是希望这样的错误越少越好，为了达到这样的目标，可以采取损失函数或者引入松弛变量的方法。</p>
 
-<p>令$w=(w_{original};b),x_i=(x_i;1)$，在逻辑斯蒂回归中，$h(x_i)=\frac{1}{1+e^{-(w^Tx_i)}}$将线性回归的结果映射到$(0,1)$上(Logisitic Distribution)，其值可视作样本为正类$1$的概率(置信度)；若$p(y_i|x_i)$表示样本$x_i$被预测正确的概率，则可重写为：$p(y_i|x_i)=h(x_i)^{y_i}· (1-h(x_i))^{1-y_i}$。</p>
+<p>对应不同的损失函数，软间隔SVM的优化目标为(C为超参数，调节“软”的程度)：</p>
 
-<p>假设样本之间独立，则样本集的似然函数为$\prod _{i=1}^nh(x_i)^{y_i}· (1-h(x_i))^{1-y_i}$，对数变换后得：$$L(w)=\sum _{i=1}^n y_i log\big(h(x_i)\big) +(1-y_i)log\big(1-h(x_i)\big)$$
-由极大似然法，优化目标为：$\min\limits_w (-L)$</p>
-
-<h4 id="求解-似然函数可通过凸优化的方式求解-这里采用梯度下降法"><strong>求解</strong>：似然函数可通过凸优化的方式求解，这里采用梯度下降法。</h4>
-
-<p>不妨设$z = w^Tx_i$，对于参数$w_j$，计算偏导为：
-\begin{equation}\begin{split}
-\frac{\partial{(-L)}}{\partial w_j}&amp;=-\sum _{i=1}^n x_i^j·\frac{e^{-z}}{(1+e^{-z})^2} · \big( \frac{y _i}{h(x_i)} - \frac{1-y _i}{1-h(x_i)}  \big) \\<br />
-&amp;=-\sum _{i=1}^n x_i^j·\frac{e^{-z}}{(1+e^{-z})^2} · \big( y _i(1+e^{-z}) - \frac{(1-y _i)(1+e^{-z})}{e^{-z}} \big)\\<br />
-&amp; = -\sum _{i=1}^n x_i^j·\frac{e^{-z}}{1+e^{-z}} · (y _i - \frac{1-y _i}{e^{-z}}) \\<br />
-&amp; = -\sum _{i=1}^n x_i^j· \big[  (1-h(x_i))y_i - h(x_i)(1-y _i)  \big] \\<br />
-&amp; = \sum _{i=1}^n x_i^j (h(x_i)-y_i)
-\end{split}\end{equation}</p>
-
-<p>若学习率为$\alpha$，则每次迭代后：$$w _j = w _j - \alpha ·  \frac{\partial{(-L)}}{\partial w_j}$$</p>
-
-<hr />
-
-<h4 id="参考资料">参考资料：</h4>
-
-<ol>
-<li>《机器学习》，周志华，清华大学出版社，2017</li>
-<li>《统计学习方法》，李航，清华大学出版社，2012</li>
-</ol>
+<ul>
+<li>hinge损失: $\min \limits _{w,b} \frac{1}{2}||w||^2 + C\sum _{i=1}^n max(0, 1 - y_i(wx_i+b))$</li>
+</ul>
 
   </div>
 
   <div id=links>
     
-      <a class="basic-alignment left" href="https://hellosilicat.github.io/post/confusion/">&laquo; Confusion Matrix and Measurement</a>
+      <a class="basic-alignment left" href="https://hellosilicat.github.io/post/dt-rf/">&laquo; Decision Tree and Random Forest</a>
     
-    
-      <a class="basic-alignment left" href="https://hellosilicat.github.io/post/dt-rf/">Decision Tree and Random Forest &raquo;</a>
     
   </div>
 </section>

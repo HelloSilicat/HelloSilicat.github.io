@@ -525,6 +525,8 @@ MathJax.Hub.Config({
 
 <p>$$Gini-index(D,a) = \sum _{v=1}^V \frac{|D^v|}{|D|}Gini(D^v)$$</p>
 
+<hr />
+
 <h3 id="2-决策树">2. 决策树</h3>
 
 <h4 id="id3-分类树-采取信息增益率作为最优化分标准"><strong>ID3</strong>：分类树，采取信息增益率作为最优化分标准；</h4>
@@ -539,11 +541,22 @@ MathJax.Hub.Config({
 
 <h4 id="剪枝-预剪枝在构建决策树时评估是否会带来泛化性的提升而选择是否分隔-训练速度快但是容易欠拟合-后剪枝从构建的决策树自叶节点向上-若将叶节点与父节点合并会提升泛化性则进行合并"><strong>剪枝</strong>：预剪枝在构建决策树时评估是否会带来泛化性的提升而选择是否分隔，训练速度快但是容易欠拟合；后剪枝从构建的决策树自叶节点向上，若将叶节点与父节点合并会提升泛化性则进行合并；</h4>
 
+<hr />
+
 <h3 id="3-随机森林">3. 随机森林</h3>
 
 <h4 id="bagging-bootstrap-aggregating-每次不放回采样m个样本进行训练-得到t个模型-分类则投票法-回归则平均法-bootstrap方法每次约能涵盖63-2-的原始样本-剩余的36-8-可用作包外估计"><strong>Bagging(Bootstrap Aggregating)</strong>：每次不放回采样m个样本进行训练，得到T个模型，分类则投票法，回归则平均法；Bootstrap方法每次约能涵盖63.2%的原始样本，剩余的36.8%可用作包外估计；</h4>
 
 <h4 id="随机森林-基学习器是决策树-在bagging的基础上-每次划分特征时-先随机选择k个特征-然后在这些特征中选择最优的-最终投票产生结果"><strong>随机森林</strong>：基学习器是决策树，在Bagging的基础上，每次划分特征时，先随机选择k个特征，然后在这些特征中选择最优的，最终投票产生结果；</h4>
+
+<hr />
+
+<h4 id="参考资料">参考资料：</h4>
+
+<ol>
+<li>《机器学习》，周志华，清华大学出版社，2017</li>
+<li>《统计学习方法》，李航，清华大学出版社，2012</li>
+</ol>
 
   </div>
 
@@ -551,6 +564,8 @@ MathJax.Hub.Config({
     
       <a class="basic-alignment left" href="https://hellosilicat.github.io/post/2lr/">&laquo; Linear Regression and Logistic Regression</a>
     
+    
+      <a class="basic-alignment left" href="https://hellosilicat.github.io/post/svm/">Support Vector Machine &raquo;</a>
     
   </div>
 </section>

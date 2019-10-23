@@ -6,10 +6,23 @@
     <description>Recent content on Kanata</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 14 Oct 2019 14:04:29 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 15 Oct 2019 11:14:34 +0800</lastBuildDate>
     
 	<atom:link href="https://hellosilicat.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Support Vector Machine</title>
+      <link>https://hellosilicat.github.io/post/svm/</link>
+      <pubDate>Tue, 15 Oct 2019 11:14:34 +0800</pubDate>
+      
+      <guid>https://hellosilicat.github.io/post/svm/</guid>
+      <description>支持向量机(Support Vector Machine)既可以处理分类任务(SVC)，也可以处理回归任务(SVR)；既可以处理线性可分数据集(硬间隔SVM)，也能处理非线性可分数据集(软间隔SVM、核方法)。
+1. 线性SVM 对于二分类线性可分数据集（正类表示为+1，负类表示为-1），设直线为$wx+b=0$能够分离不同类的样本点($wx+b&amp;gt;0$为正类，反之负类)，定义与直线距离最近的点$x _\alpha(\alpha=1,2,&amp;hellip;)$为支持向量，注意$y _i(wx _i+b)$的符号可以表示分类正确性(正代表分类正确，负表示分类错误)，则线性SVM的优化目标为直线到支持向量的距离最大，即： $$\max \limits _{w,b} \frac{y _\alpha(wx _\alpha+b)}{||w||}$$ $$s.t. \frac{y _i(wx _i +b)}{||w||} \ge \frac{y _\alpha (wx _\alpha +b)}{||w||}$$
+因为同比例改变$w,b$不影响直线位置/形状，所以若$y _\alpha(wx _ \alpha+b)=\lambda$，则$(\frac{1}{\lambda * y _ \alpha}w, \frac{1}{\lambda * y _\alpha}b)$也是解，因此不妨设$y _\alpha (w x _\alpha +b)=1$，这样优化目标为(不等式两边同乘$|w|$)： $$\max \limits _{w,b} \frac{1}{||w||}$$ $$s.t. y _i(wx _i +b) \ge 1$$
+为进行凸优化，$max \frac{1}{||w||}$可写成$min \frac{1}{2}||w||^2$，这样线性SVM最终的优化目标为： $$\min \limits _{w,b} \frac{1}{2}||w||^2$$ $$s.t. y _i(wx _i +b) \ge 1$$
+拉格朗日乘子法对应的拉格朗日函数为： $$L(w,b,\alpha) = \frac{1}{2} ||w||^2 + \sum _{i=1}^n \alpha _i (1 - y _i (wx _i +b))$$</description>
+    </item>
     
     <item>
       <title>Decision Tree and Random Forest</title>
@@ -23,7 +36,7 @@
 信息增益率：度量样本集合根据特定属性$a$分割后信息熵降低程度，偏好类别数较少的属性，信息增益率越大，分割后纯度越大，定义为： $$Gain-ratio(D,a) = \frac{Gain(D,a)}{-\sum _{v=1}^V \frac{|D^v|}{|D|} log\frac{|D^v|}{|D|} }$$
 基尼系数：度量样本集合纯度，越小越纯(直观上代表从样本集合中抽出两个样本，它们类别不一致的概率)，定义为： $$Gini(D) = 1 - \sum _{i=1}^K p_i^2$$
 属性基尼系数：度量样本集合按照特定属性$a$分割后纯度，越小越纯，定义为： $$Gini-index(D,a) = \sum _{v=1}^V \frac{|D^v|}{|D|}Gini(D^v)$$
-2. 决策树 ID3：分类树，采取信息增益率作为最优化分标准； C4.5：分类树，二分法离散化连续值，划分时，先选择信息增益高于平均水平的特征，再选择信息增益率最大的； CART：分类树/回归树，作为分类树时以属性基尼系数作为最优划分标准；作为回归树时参考回归树 基本算法： 剪枝：预剪枝在构建决策树时评估是否会带来泛化性的提升而选择是否分隔，训练速度快但是容易欠拟合；后剪枝从构建的决策树自叶节点向上，若将叶节点与父节点合并会提升泛化性则进行合并； 3. 随机森林 Bagging(Bootstrap Aggregating)：每次不放回采样m个样本进行训练，得到T个模型，分类则投票法，回归则平均法；Bootstrap方法每次约能涵盖63.2%的原始样本，剩余的36.8%可用作包外估计； 随机森林：基学习器是决策树，在Bagging的基础上，每次划分特征时，先随机选择k个特征，然后在这些特征中选择最优的，最终投票产生结果； </description>
+2. 决策树 ID3：分类树，采取信息增益率作为最优化分标准； C4.5：分类树，二分法离散化连续值，划分时，先选择信息增益高于平均水平的特征，再选择信息增益率最大的； CART：分类树/回归树，作为分类树时以属性基尼系数作为最优划分标准；作为回归树时参考回归树 基本算法： 剪枝：预剪枝在构建决策树时评估是否会带来泛化性的提升而选择是否分隔，训练速度快但是容易欠拟合；后剪枝从构建的决策树自叶节点向上，若将叶节点与父节点合并会提升泛化性则进行合并； 3. 随机森林 Bagging(Bootstrap Aggregating)：每次不放回采样m个样本进行训练，得到T个模型，分类则投票法，回归则平均法；Bootstrap方法每次约能涵盖63.2%的原始样本，剩余的36.8%可用作包外估计； 随机森林：基学习器是决策树，在Bagging的基础上，每次划分特征时，先随机选择k个特征，然后在这些特征中选择最优的，最终投票产生结果； 参考资料：  《机器学习》，周志华，清华大学出版社，2017 《统计学习方法》，李航，清华大学出版社，2012  </description>
     </item>
     
     <item>
