@@ -577,6 +577,8 @@ $$0\le\alpha _i\le C,i=1,2,&hellip;,n$$</p>
 <p>其KKT条件为：
 $$\alpha _i \ge 0, \\\ \mu _i \ge 0, \\\ y _i(w x _i  + b) - 1+ \xi _i \ge 0, \\\ \xi _i \ge 0, \\\ \alpha _i (y _i(w x _i + b) - 1 + \xi) = 0, \\\ \mu _i \xi _i = 0$$</p>
 
+<hr />
+
 <h3 id="3-核方法">3. 核方法</h3>
 
 <p>另一个针对非线性可分数据集的SVM是引入核方法，可证明：如果原始空间是有限集，即属性数有限，那么一定存在一个高维特征空间使样本可分。</p>
@@ -604,6 +606,8 @@ f(x) &amp;= w^T\phi (x) + b \\<br />
 <li>多项式核：$K(x,y)=(x^Ty)^d$</li>
 <li>高斯核：$K(x,y)=e^{-\frac{||x-y||^2}{2\sigma ^2}}$</li>
 </ul>
+
+<hr />
 
 <h3 id="4-支持向量回归">4. 支持向量回归</h3>
 
@@ -634,12 +638,22 @@ $$\max \limits _{\alpha _i, \hat \alpha _i} \sum _{i=1}^n y_i(\hat \alpha _i - \
 $$s.t. \sum _{i=1}^n (\hat \alpha _i - \alpha _i) = 0,$$
 $$0 \le \alpha _i, \hat \alpha _i \le C$$</p>
 
+<hr />
+
+<h4 id="参考资料">参考资料：</h4>
+
+<ol>
+<li>《机器学习》，周志华，清华大学出版社，2017</li>
+</ol>
+
   </div>
 
   <div id=links>
     
       <a class="basic-alignment left" href="https://hellosilicat.github.io/post/dt-rf/">&laquo; Decision Tree and Random Forest</a>
     
+    
+      <a class="basic-alignment left" href="https://hellosilicat.github.io/post/cluster/">K-Means and DBSCAN &raquo;</a>
     
   </div>
 </section>

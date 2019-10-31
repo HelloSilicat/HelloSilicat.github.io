@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-	<meta name="generator" content="Hugo 0.58.3" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="HandheldFriendly" content="True">
@@ -21,10 +20,10 @@
     <title>
       
       
-         Kanata 
+         K-Means and DBSCAN 
       
     </title>
-    <link rel="canonical" href="https://hellosilicat.github.io/">
+    <link rel="canonical" href="https://hellosilicat.github.io/post/cluster/">
 	<script type="text/javascript"
   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
@@ -471,8 +470,6 @@ MathJax.Hub.Config({
 
 
     
-        <atom:link href="https://hellosilicat.github.io/index.xml" rel="self" type="application/rss+xml" />
-    
   </head>
 
   <body>
@@ -489,55 +486,97 @@ MathJax.Hub.Config({
       </ul>
     </section>
 
+
 <section id=content>
-  <hr style="border-top:1px solid #000;margin: 10px auto;"/>
-  <table class=posts_listing style="width:100%;border:1px;border-color:black">
+  <h1 style="font-size:1.3em;border-bottom:1px solid #000"> K-Means and DBSCAN </h1>
+  
+  
+    <div id=sub-header>
+      Oct 31, 2019 · 1 minute read
+    </div>
+  
+
+  <div class="entry-content">
     
-	  <tbody>
-      
-	  <tr>
-	  <td><a href="https://hellosilicat.github.io/post/cluster/">K-Means and DBSCAN</a></td>
-	  <td id=date style="text-align:right;width:11ex;"><time>Oct 31, 2019</time></td>
-	  </tr>
-	  <tbody>
+
+<h3 id="1-k-means-algorithm">1. K-Means Algorithm</h3>
+
+<p>给定样本集$D={x_1,x_2,&hellip;,x_n}$，k-means算法针对聚类所得簇划分$C={C_1,C_2,&hellip;,C_k}$最小化平方误差（$\mu _i = \frac{1}{C _i}\sum _{x\in C _i}x$）:
+$$E=\sum _{i=1}^k \sum _{x\in C _i}||x-\mu _i|| _2^2$$</p>
+
+<p>然而，直接求解是NP-hard问题，故需要贪心迭代求解：</p>
+
+<p><img src="http://m.qpic.cn/psb?/V12HCzzo2MbQyJ/wFNn3CMyQDODfisb35GuRydioSg7BK.C4Cu29dI9xmk!/b/dLYAAAAAAAAA&amp;bo=4wInAuMCJwIDCSw!&amp;rf=viewer_4" alt="kmeans" /></p>
+
+<hr />
+
+<h3 id="2-k-means-k值确定">2. K-Means K值确定</h3>
+
+<p><strong>轮廓系数(Sihouette Coefficient)</strong>：令凝聚度$a(i)$表示第$i$个样本与其同簇内所有其他元素的平均距离，分离度$b(i)$表示第i个样本与其他簇的最小平均距离，则轮廓系数可定义为：
+$$S = \frac{1}{n} \sum _{i=1} ^ n \frac{b(i)-a(i)}{max(a(i),b(i))}$$</p>
+
+<p>如何确定K值？  枚举一些k，分别计算轮廓系数，选择最大的。</p>
+
+<p>另一种方法是肘部法：绘制代价函数与k的折线图，寻找折点。</p>
+
+<hr />
+
+<h3 id="3-k-means-初始簇中心确定">3. K-Means 初始簇中心确定</h3>
+
+<p><strong>K-Means++</strong>：初始的聚类中心相互距离尽可能远</p>
+
+<ol>
+<li>在样本集合中选择一个样本作为第一个聚类中心</li>
+<li>对于其他样本x，计算它与最近的簇中心的距离$D(x)$</li>
+<li>选择一个新的数据点作为新的聚类中心，选择的原则是：$D(x)$较大的点，概率较大</li>
+<li>重复2、3，直到选取了$k$个簇中心</li>
+<li>继续K-Means</li>
+</ol>
+
+<hr />
+
+<h3 id="4-dbscan">4. DBSCAN</h3>
+
+<p>DBSCAN(Density-Based Spatial Clustering of Applications with Noise)基于一组“领域”参数$(e, MinPts)$来刻画样本分本的紧密程度，首先给出以下概念：</p>
+
+<ul>
+<li>$e$-邻域：对$x_j \in D$，其$e$-邻域包含样本集D中与$x_j$的距离不大于$e$的样本，即$$N _e (x _j) = {x _i \in D | dist(x _i, x_j) \le e}.$$</li>
+<li>核心对象：若$x _j$的$e$-邻域至少包含$MinPts$个样本，即$|N_e(x_j)|\ge MinPts$，则$x _j$是一个核心对象.</li>
+<li>密度直达：若$x _j$位于$x _i$的$e$-邻域中，且$x _i$是核心对象，则称$x _j$由$x _i$密度直达.</li>
+<li>密度可达：对$x _i$和$x _j$，若存在样本序列$p _1, p _2, &hellip;, p _n$，其中$p_1=x _i, p_n = x _j$且$p _{i+1}$由$p _i$密度直达，则称$x _j$由$x _i$密度可达；</li>
+<li>密度相连：对$x _i$与$x _j$，若存在$x _k$使得$x _i$与$x _j$均有$x _k$密度可达，则称$x _i$与$x _j$密度相连。</li>
+</ul>
+
+<p>如图，虚线框表示$e$-邻域，$x_1$是核心对象，$x_2$由$x_1$密度直达，$x_3$由$x_1$密度可达，$x_3$与$x_4$密度相连。</p>
+
+<p><img src="http://m.qpic.cn/psb?/V12HCzzo2MbQyJ/4g9mINgYIghNd5idxzKNlfG*x7utDWrN1EOg0DxKEXU!/b/dDYBAAAAAAAA&amp;bo=RAIPAQAAAAADB2o!&amp;rf=viewer_4" alt="db" /></p>
+
+<p>DBSCAN算法先任选数据集中的一个核心对象为“种子”，再由此出发确定相应的聚类簇，首先根据给定的邻域参数$(e,MinPts)$找出所有核心对象，然后以任一核心对象为出发点，找出由其密度可达的样本生成聚类簇，直到所有核心对象均被访问过为止，最终没有被访问的样本可视作离群点，算法描述如图。</p>
+
+<p><img src="http://m.qpic.cn/psb?/V12HCzzo2MbQyJ/xzit4UrLAJKP7rj8v7rcodB5ogl4UqOBlwhzZ3yUYuE!/b/dLYAAAAAAAAA&amp;bo=1wHmAtcB5gIDGTw!&amp;rf=viewer_4" alt="db" /></p>
+
+<hr />
+
+<h4 id="参考资料">参考资料：</h4>
+
+<ol>
+<li>《机器学习》，周志华，清华大学出版社，2017</li>
+<li><a href="https://www.cnblogs.com/dudumiaomiao/p/5839905.html">kmeans算法原理以及实践操作</a></li>
+</ol>
+
+  </div>
+
+  <div id=links>
     
-	  <tbody>
-      
-	  <tr>
-	  <td><a href="https://hellosilicat.github.io/post/svm/">Support Vector Machine</a></td>
-	  <td id=date style="text-align:right;width:11ex;"><time>Oct 15, 2019</time></td>
-	  </tr>
-	  <tbody>
+      <a class="basic-alignment left" href="https://hellosilicat.github.io/post/svm/">&laquo; Support Vector Machine</a>
     
-	  <tbody>
-      
-	  <tr>
-	  <td><a href="https://hellosilicat.github.io/post/dt-rf/">Decision Tree and Random Forest</a></td>
-	  <td id=date style="text-align:right;width:11ex;"><time>Oct 14, 2019</time></td>
-	  </tr>
-	  <tbody>
     
-	  <tbody>
-      
-	  <tr>
-	  <td><a href="https://hellosilicat.github.io/post/2lr/">Linear Regression and Logistic Regression</a></td>
-	  <td id=date style="text-align:right;width:11ex;"><time>Oct 12, 2019</time></td>
-	  </tr>
-	  <tbody>
-    
-	  <tbody>
-      
-	  <tr>
-	  <td><a href="https://hellosilicat.github.io/post/confusion/">Confusion Matrix and Measurement</a></td>
-	  <td id=date style="text-align:right;width:11ex;"><time>Oct 10, 2019</time></td>
-	  </tr>
-	  <tbody>
-    
-  </table>
+  </div>
 </section>
 
   
 </body>
 </html>
+
 
 
