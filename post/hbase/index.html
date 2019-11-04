@@ -535,6 +535,8 @@ export PATH=$JAVA_HOME/bin:$JAVA_HOME/jre/bin:$PATH
 
 <p>C. Check with <code>java -version</code></p>
 
+<hr />
+
 <h3 id="3-build-hadoop">3. Build Hadoop</h3>
 
 <p>A. Adding following lines to <code>/etc/profile</code></p>
@@ -547,6 +549,8 @@ export PATH=$PATH:$HADOOP_HOME/sbin
 <p>B. Refresh it with <code>source /etc/profile</code></p>
 
 <p>C. Check with <code>hadoop version</code></p>
+
+<hr />
 
 <h3 id="4-configure-hdfs">4. Configure HDFS</h3>
 
@@ -595,6 +599,8 @@ export PATH=$PATH:$HADOOP_HOME/sbin
 <p>F. Check with <code>jps</code>(three process:Jps/NameNode/DataNode) and visit <code>xxx:50070</code> with Chrome.
 <img src="http://m.qpic.cn/psb?/V12HCzzo2MbQyJ/hEgx0kpRRfL6MpZWu*NuGo.kUENFcLrm2r9zDzP1Mng!/b/dDUBAAAAAAAA&amp;bo=NAg4BAAAAAADByI!&amp;rf=viewer_4" alt="hadoop" /></p>
 
+<hr />
+
 <h3 id="5-configure-yarn">5. Configure YARN</h3>
 
 <p>A. Add <code>export JAVA_HOME=/usr/local/software/jdk1.8.0_231</code> to <code>/usr/local/software/hadoop-2.9.2/etc/hadoop/yarn-env.sh</code></p>
@@ -619,6 +625,8 @@ export PATH=$PATH:$HADOOP_HOME/sbin
 <p>D. Check with <code>jps</code>(five process:Jps/DataNode/ResourceManager/NameNode/NodeManager) and visit <code>xxx:8088</code> with Chrome.
 <img src="http://m.qpic.cn/psb?/V12HCzzo2MbQyJ/*DL9.VD3CGB*ZOlsWa7ahTzhfOdDGGgYN2UmU.KZsXo!/b/dAQBAAAAAAAA&amp;bo=AAokBQAKJAUDCSw!&amp;rf=viewer_4" alt="yarn" /></p>
 
+<hr />
+
 <h3 id="6-configure-mapreduce">6. Configure MapReduce</h3>
 
 <p>A. Add <code>export JAVA_HOME=/usr/local/software/jdk1.8.0_231</code> to <code>/usr/local/software/hadoop-2.9.2/etc/hadoop/mapred-env.sh</code></p>
@@ -634,6 +642,8 @@ export PATH=$PATH:$HADOOP_HOME/sbin
     &lt;/property&gt;
 &lt;/configuration&gt;
 </code></pre>
+
+<hr />
 
 <h3 id="7-build-hbase">7. Build HBase</h3>
 
@@ -683,6 +693,8 @@ export HBASE_MANAGES_ZK=true
 
 <p>G. Check with <code>jps</code> and <code>hbase shell</code>
 <img src="http://m.qpic.cn/psb?/V12HCzzo2MbQyJ/mN9zWP5n6UxzM4YJtvSlB0N**n3zCNoBzWXCUzfC7Rs!/b/dLYAAAAAAAAA&amp;bo=yAeAAhkImgIDCeg!&amp;rf=viewer_4" alt="hbase" /></p>
+
+<hr />
 
 <h3 id="reference">Reference</h3>
 
