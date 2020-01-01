@@ -13,17 +13,17 @@
       <link href='https://fonts.googleapis.com/css?family=Open+Sans:400|Old+Standard+TT:400' rel='stylesheet' type='text/css'>
     
 
-    <link rel="icon" type="image/png" href="https://hellosilicat.github.io/favicon_16x16.png" sizes="16x16">
-    <link rel="icon" type="image/png" href="https://hellosilicat.github.io/favicon_32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="https://hellosilicat.github.io/favicon_128x128.png" sizes="128x128">
+    <link rel="icon" type="image/png" href="/favicon_16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon_32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/favicon_128x128.png" sizes="128x128">
 
     <title>
       
       
-         K-Means and DBSCAN 
+         Additive Model and Adaboost 
       
     </title>
-    <link rel="canonical" href="https://hellosilicat.github.io/post/cluster/">
+    <link rel="canonical" href="https://hellosilicat.github.io/posts/adaboost/">
 	<script type="text/javascript"
   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
@@ -474,111 +474,121 @@ MathJax.Hub.Config({
 
   <body>
     <section id=nav>
-      <h1><a href="https://hellosilicat.github.io/">Kanata</a></h1>
+      <h1><a href="/">MONO</a></h1>
       <ul>
         
-          <li><a href="https://hellosilicat.github.io/">About</a></li>
+          <li><a href="/about/">About</a></li>
         
-          <li><a href="https://hellosilicat.github.io/">Posts</a></li>
+          <li><a href="/experience/">Experience</a></li>
         
-          <li><a href="https://hellosilicat.github.io/">Resume</a></li>
+          <li><a href="/theory/">Theory</a></li>
         
       </ul>
     </section>
 
-
 <section id=content>
-  <h1 style="font-size:1.3em;border-bottom:1px solid #000"> K-Means and DBSCAN </h1>
-  
-  
-    <div id=sub-header>
-      Oct 31, 2019 · 1 minute read
-    </div>
-  
-
-  <div class="entry-content">
     
+    
+    <h1 style="font-size:1.3em;border-bottom:1px solid #000"> Additive Model and Adaboost </h1>
+    <div class="entry-content">
+        
 
-<h3 id="1-k-means-algorithm">1. K-Means Algorithm</h3>
-
-<p>给定样本集$D={x_1,x_2,&hellip;,x_n}$，k-means算法针对聚类所得簇划分$C={C_1,C_2,&hellip;,C_k}$最小化平方误差（$\mu _i = \frac{1}{C _i}\sum _{x\in C _i}x$）:
-$$E=\sum _{i=1}^k \sum _{x\in C _i}||x-\mu _i|| _2^2$$</p>
-
-<p>然而，直接求解是NP-hard问题，故需要贪心迭代求解：</p>
-
-<p><img src="http://m.qpic.cn/psb?/V12HCzzo2MbQyJ/wFNn3CMyQDODfisb35GuRydioSg7BK.C4Cu29dI9xmk!/b/dLYAAAAAAAAA&amp;bo=4wInAuMCJwIDCSw!&amp;rf=viewer_4" alt="kmeans" /></p>
-
-<hr />
-
-<h3 id="2-k-means-k值确定">2. K-Means K值确定</h3>
-
-<p><strong>轮廓系数(Sihouette Coefficient)</strong>：令凝聚度$a(i)$表示第$i$个样本与其同簇内所有其他元素的平均距离，分离度$b(i)$表示第i个样本与其他簇的最小平均距离，则轮廓系数可定义为：
-$$S = \frac{1}{n} \sum _{i=1} ^ n \frac{b(i)-a(i)}{max(a(i),b(i))}$$</p>
-
-<p>如何确定K值？  枚举一些k，分别计算轮廓系数，选择最大的。</p>
-
-<p>另一种方法是肘部法：绘制代价函数与k的折线图，寻找折点。</p>
-
-<hr />
-
-<h3 id="3-k-means-初始簇中心确定">3. K-Means 初始簇中心确定</h3>
-
-<p><strong>K-Means++</strong>：初始的聚类中心相互距离尽可能远</p>
-
-<ol>
-<li>在样本集合中选择一个样本作为第一个聚类中心</li>
-<li>对于其他样本x，计算它与最近的簇中心的距离$D(x)$</li>
-<li>选择一个新的数据点作为新的聚类中心，选择的原则是：$D(x)$较大的点，概率较大</li>
-<li>重复2、3，直到选取了$k$个簇中心</li>
-<li>继续K-Means</li>
-</ol>
-
-<hr />
-
-<h3 id="4-dbscan">4. DBSCAN</h3>
-
-<p>DBSCAN(Density-Based Spatial Clustering of Applications with Noise)基于一组“领域”参数$(e, MinPts)$来刻画样本分本的紧密程度，首先给出以下概念：</p>
+<p>所谓提升方法(boosting)，其初衷旨在将多个弱学习器提升为强学习器，普遍做法是改变训练数据分布学习多个弱学习器并采取一定策略使用它们，因此了解某个boosting方法，我们需要明白它：</p>
 
 <ul>
-<li>$e$-邻域：对$x_j \in D$，其$e$-邻域包含样本集D中与$x_j$的距离不大于$e$的样本，即$$N _e (x _j) = {x _i \in D | dist(x _i, x_j) \le e}.$$</li>
-<li>核心对象：若$x _j$的$e$-邻域至少包含$MinPts$个样本，即$|N_e(x_j)|\ge MinPts$，则$x _j$是一个核心对象.</li>
-<li>密度直达：若$x _j$位于$x _i$的$e$-邻域中，且$x _i$是核心对象，则称$x _j$由$x _i$密度直达.</li>
-<li>密度可达：对$x _i$和$x _j$，若存在样本序列$p _1, p _2, &hellip;, p _n$，其中$p_1=x _i, p_n = x _j$且$p _{i+1}$由$p _i$密度直达，则称$x _j$由$x _i$密度可达；</li>
-<li>密度相连：对$x _i$与$x _j$，若存在$x _k$使得$x _i$与$x _j$均有$x _k$密度可达，则称$x _i$与$x _j$密度相连。</li>
+<li>迭代中如何改变训练数据分布？</li>
+<li>最终如何将弱学习器组合成强学习器？</li>
 </ul>
 
-<p>如图，虚线框表示$e$-邻域，$x_1$是核心对象，$x_2$由$x_1$密度直达，$x_3$由$x_1$密度可达，$x_3$与$x_4$密度相连。</p>
+<p>本文首先引入boosting的贪心学习策略（<strong>加法模型与前向分步算法</strong>），之后推导式地介绍经典方法<strong>Adaboost</strong>。</p>
 
-<p><img src="http://m.qpic.cn/psb?/V12HCzzo2MbQyJ/4g9mINgYIghNd5idxzKNlfG*x7utDWrN1EOg0DxKEXU!/b/dDYBAAAAAAAA&amp;bo=RAIPAQAAAAADB2o!&amp;rf=viewer_4" alt="db" /></p>
+<hr />
 
-<p>DBSCAN算法先任选数据集中的一个核心对象为“种子”，再由此出发确定相应的聚类簇，首先根据给定的邻域参数$(e,MinPts)$找出所有核心对象，然后以任一核心对象为出发点，找出由其密度可达的样本生成聚类簇，直到所有核心对象均被访问过为止，最终没有被访问的样本可视作离群点，算法描述如图。</p>
+<h3 id="0-加法模型">0. 加法模型</h3>
 
-<p><img src="http://m.qpic.cn/psb?/V12HCzzo2MbQyJ/xzit4UrLAJKP7rj8v7rcodB5ogl4UqOBlwhzZ3yUYuE!/b/dLYAAAAAAAAA&amp;bo=1wHmAtcB5gIDGTw!&amp;rf=viewer_4" alt="db" /></p>
+<p>将弱学习器提升为强学习器的一种做法是基函数的线性组合，即加法模型：
+$$f(x)=\sum \limits _{m=1}^{M} \beta _mb(x;\gamma _m)$$
+其中，$M$为基函数（弱学习器）个数，$b(x;\gamma _m)$为基函数，$\gamma _m$为基函数的参数，$\beta _m$为基函数的系数。</p>
+
+<p>若给定损失函数$L(y,f(x))$，则boosting/加法模型的优化目标为：
+$$\min \limits _{\beta,\gamma} \sum \limits _{i=1}^N L \left( y _i, \sum \limits _{m=1}^{M} \beta _mb(x _i;\gamma _m)\right)$$</p>
+
+<hr />
+
+<h3 id="1-前向分步算法">1. 前向分步算法</h3>
+
+<p>求解加法模型的全局最优解是一个复杂的优化问题，在计算上难度大，因此前向分步算法试图使用贪心策略，迭代式地计算每一个基函数，每一次迭代都去获取局部最优解，描述如下。</p>
+
+<p>设前$m-1$次计算的加法模型为：
+$$f _{m-1}(x)=\sum \limits _{i=1}^{m-1} \beta _ib(x;\gamma _i)$$</p>
+
+<p>则第$m$次优化目标为：
+$$(\beta _m, \gamma _m)=arg \min \limits _{\beta, \gamma} \sum \limits _{i=1}^N L \left(  y _i, f _{m-1}(x _i) + \beta b(x _i;\gamma) \right)$$</p>
+
+<hr />
+
+<h3 id="2-adaboost">2. Adaboost</h3>
+
+<p>Adaboost作为经典提升方法，本质上是<strong>损失函数为指数函数的加法模型</strong>，以下以<u>二分类</u>为例，推导Adaboost的具体操作。</p>
+
+<p>Adaboost在形式上也是基模型$G(x)$与系数$\alpha$构成的加法模型，即：
+$$f(x)=\sum \limits _{m=1}^M \alpha _m G _m(x)$$
+其损失函数为指数损失函数，即：
+$$L(y,f(x)) = exp(-yf(x))$$</p>
+
+<p>我们需要推导的便是：</p>
+
+<ul>
+<li>如何计算每一个$\alpha$？</li>
+<li>如何改变数据分布计算每一个$G$？</li>
+</ul>
+
+<p>$$$$</p>
+
+<p>假设经过$m-1$轮前向分步迭代已经求得$f _{m-1}(x)=\alpha _1 G _1(x) + &hellip; + \alpha _{m-1} G _{m-1}(x)$，由前向分步算法，可知：</p>
+
+<p>\begin{equation}\begin{split}
+(\alpha _m,G _m(x)) &amp;= arg \min \limits _{\alpha,G}   \sum \limits _{i=1}^N exp\left(  -y _i(f _{m-1}(x _i)+\alpha G(x _i)) \right) \\<br />
+&amp;= arg \min \limits _{\alpha,G}   \sum \limits _{i=1}^N w _{m _i}exp\left( -y _i \alpha G(x _i) \right)
+\end{split}\end{equation}
+其中$w _{mi}=exp(-y _i f _{m-1}(x _i))$可以理解为第m个模型对于第i个样本的权值，用于修正训练数据分布；</p>
+
+<p>对于上式，由于$\alpha$只是一个系数且$w _{mi}$与本次迭代无关，因此可以先计算最优的$G _m^{*}(x)$，由下式得到：
+$$G _m^{*}(x)=arg \min \limits _G \sum \limits _{i=1}^N w _{mi}I(y _i \neq G(x _i))$$</p>
+
+<p>之后求最优$\alpha ^{*}_m$，如下（<u>最后一个式子拆开分解成第二个式子更容易理解</u>）：</p>
+
+<p>\begin{equation}\begin{split}
+\sum \limits _{i=1}^N w _{mi} exp\left( -y _i\alpha G(x _i) \right) &amp;=  \sum \limits _{y _i = G _m(x _i)} w _{mi} e^{-\alpha} + \sum \limits _{y _i \neq G _m(x _i)} w _{mi} e ^{\alpha} \\<br />
+&amp;= (e ^{\alpha} - e ^{-\alpha})\sum \limits _{i=1}^N w _{mi} I(y _i \neq G(x _i)) + e ^{-\alpha}\sum \limits _{i=1}^N w _{mi}
+\end{split}\end{equation}</p>
+
+<p>对$\alpha$求偏导并置零，将$G _m^{*}(x)$代入，可得：
+$$\alpha _m^{*} = \frac{1}{2}log\frac{1-e _m}{e _m}$$
+其中$e _m$是分类误差率：
+$$e _m = \frac{\sum \limits _{i=1}^N w _{mi}I(y _i \neq G _m(x _i))}{\sum \limits _{i=1}^N w _{mi}} = \sum \limits _{i=1}^N I(y _i \neq G _m(x _i))$$</p>
+
+<p>而样本分布修正因子$w _{m+1,i}$也可以通过下式获得：
+$$w _{m+1,i} = exp(-y _i f _{m}(x _i)) = w _{mi} exp(-y _i \alpha _m^{*}G _m^{*}(x))$$</p>
 
 <hr />
 
 <h4 id="参考资料">参考资料：</h4>
 
 <ol>
-<li>《机器学习》，周志华，清华大学出版社，2017</li>
-<li><a href="https://www.cnblogs.com/dudumiaomiao/p/5839905.html">kmeans算法原理以及实践操作</a></li>
+<li>《统计学习方法》，李航，清华大学出版社，2012</li>
 </ol>
 
-  </div>
-
-  <div id=links>
+    </div>
+    <div id=links>
+        
+        <a class="basic-alignment left" href="https://hellosilicat.github.io/posts/hbase/">&laquo; Single Node HBase: Build with Aliyun ECS</a>
+        
+        
+    </div>
     
-      <a class="basic-alignment left" href="https://hellosilicat.github.io/post/svm/">&laquo; Support Vector Machine</a>
     
-    
-      <a class="basic-alignment left" href="https://hellosilicat.github.io/post/hbase/">Single Node HBase: Build with Aliyun ECS &raquo;</a>
-    
-  </div>
 </section>
-
   
 </body>
 </html>
-
-
-

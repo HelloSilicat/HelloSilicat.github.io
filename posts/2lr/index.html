@@ -13,17 +13,17 @@
       <link href='https://fonts.googleapis.com/css?family=Open+Sans:400|Old+Standard+TT:400' rel='stylesheet' type='text/css'>
     
 
-    <link rel="icon" type="image/png" href="https://hellosilicat.github.io/favicon_16x16.png" sizes="16x16">
-    <link rel="icon" type="image/png" href="https://hellosilicat.github.io/favicon_32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="https://hellosilicat.github.io/favicon_128x128.png" sizes="128x128">
+    <link rel="icon" type="image/png" href="/favicon_16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon_32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/favicon_128x128.png" sizes="128x128">
 
     <title>
       
       
-         Additive Model and Adaboost 
+         Linear Regression and Logistic Regression 
       
     </title>
-    <link rel="canonical" href="https://hellosilicat.github.io/post/adaboost/">
+    <link rel="canonical" href="https://hellosilicat.github.io/posts/2lr/">
 	<script type="text/javascript"
   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
@@ -474,130 +474,96 @@ MathJax.Hub.Config({
 
   <body>
     <section id=nav>
-      <h1><a href="https://hellosilicat.github.io/">Kanata</a></h1>
+      <h1><a href="/">MONO</a></h1>
       <ul>
         
-          <li><a href="https://hellosilicat.github.io/">About</a></li>
+          <li><a href="/about/">About</a></li>
         
-          <li><a href="https://hellosilicat.github.io/">Posts</a></li>
+          <li><a href="/experience/">Experience</a></li>
         
-          <li><a href="https://hellosilicat.github.io/">Resume</a></li>
+          <li><a href="/theory/">Theory</a></li>
         
       </ul>
     </section>
 
-
 <section id=content>
-  <h1 style="font-size:1.3em;border-bottom:1px solid #000"> Additive Model and Adaboost </h1>
-  
-  
-    <div id=sub-header>
-      Dec 28, 2019 · 2 minute read
-    </div>
-  
-
-  <div class="entry-content">
     
+    
+    <h1 style="font-size:1.3em;border-bottom:1px solid #000"> Linear Regression and Logistic Regression </h1>
+    <div class="entry-content">
+        
 
-<p>所谓提升方法(boosting)，其初衷旨在将多个弱学习器提升为强学习器，普遍做法是改变训练数据分布学习多个弱学习器并采取一定策略使用它们，因此了解某个boosting方法，我们需要明白它：</p>
+<h3 id="1-线性回归-单变量">1. 线性回归(单变量)</h3>
 
-<ul>
-<li>迭代中如何改变训练数据分布？</li>
-<li>最终如何将弱学习器组合成强学习器？</li>
-</ul>
+<h4 id="优化目标"><strong>优化目标：</strong></h4>
 
-<p>本文首先引入boosting的贪心学习策略（<strong>加法模型与前向分步算法</strong>），之后推导式地介绍经典方法<strong>Adaboost</strong>。</p>
+<p>以均方误差为度量，损失函数定义为$E=\sum_{i=1}^n(y_i-wx_i-b)^2$，优化目标为：$\min\limits_{(w,b)} E $</p>
 
-<hr />
+<h4 id="求解"><strong>求解：</strong></h4>
 
-<h3 id="0-加法模型">0. 加法模型</h3>
+<p>求导得：$$\frac{\partial E}{\partial w}=2\big(w\sum_{i=1}^nx_i^2-\sum_{i=1}^n(y_i-b)x_i\big)$$ $$\frac{\partial E}{\partial b}=2\big(nb-\sum_{i=1}^n(y_i-wx_i)\big)$$</p>
 
-<p>将弱学习器提升为强学习器的一种做法是基函数的线性组合，即加法模型：
-$$f(x)=\sum \limits _{m=1}^{M} \beta _mb(x;\gamma _m)$$
-其中，$M$为基函数（弱学习器）个数，$b(x;\gamma _m)$为基函数，$\gamma _m$为基函数的参数，$\beta _m$为基函数的系数。</p>
-
-<p>若给定损失函数$L(y,f(x))$，则boosting/加法模型的优化目标为：
-$$\min \limits _{\beta,\gamma} \sum \limits _{i=1}^N L \left( y _i, \sum \limits _{m=1}^{M} \beta _mb(x _i;\gamma _m)\right)$$</p>
+<p>令偏导为零得(其中$\overline x = \frac{1}{n}x_i$)：$$w=\frac{\sum_{i=1}^ny_i(x_i-\overline x)}{\sum_{i=1}^nx_i^2-\frac{1}{n}(\sum_{i=1}^nx_i)^2}$$ $$b=\frac{1}{n}\sum_{i=1}^n(y_i-wx_i)$$</p>
 
 <hr />
 
-<h3 id="1-前向分步算法">1. 前向分步算法</h3>
+<h3 id="2-线性回归-多变量">2. 线性回归(多变量)</h3>
 
-<p>求解加法模型的全局最优解是一个复杂的优化问题，在计算上难度大，因此前向分步算法试图使用贪心策略，迭代式地计算每一个基函数，每一次迭代都去获取局部最优解，描述如下。</p>
+<h4 id="优化目标-1"><strong>优化目标：</strong></h4>
 
-<p>设前$m-1$次计算的加法模型为：
-$$f _{m-1}(x)=\sum \limits _{i=1}^{m-1} \beta _ib(x;\gamma _i)$$</p>
+<p>令$w= (w_{original};b), X=(X_{original};1)$，损失函数定义为$E=(y-Xw)^T(y-Xw)$，优化目标为:$\min\limits_w E$</p>
 
-<p>则第$m$次优化目标为：
-$$(\beta _m, \gamma _m)=arg \min \limits _{\beta, \gamma} \sum \limits _{i=1}^N L \left(  y _i, f _{m-1}(x _i) + \beta b(x _i;\gamma) \right)$$</p>
+<h4 id="求解-仍然是凸函数-矩阵求导后置零计算参数"><strong>求解：</strong>仍然是凸函数，矩阵求导后置零计算参数。</h4>
+
+<p>求导得：$$\frac{\partial E}{\partial w} = 2X^T(Xw - y)$$</p>
+
+<p>令导数为零($X^TX$为满秩矩阵或正定矩阵时，否则无解或多解)得：$$w=(X^TX)^{-1}X^Ty$$</p>
 
 <hr />
 
-<h3 id="2-adaboost">2. Adaboost</h3>
+<h3 id="3-逻辑斯蒂回归">3. 逻辑斯蒂回归</h3>
 
-<p>Adaboost作为经典提升方法，本质上是<strong>损失函数为指数函数的加法模型</strong>，以下以<u>二分类</u>为例，推导Adaboost的具体操作。</p>
+<h4 id="优化目标-2"><strong>优化目标：</strong></h4>
 
-<p>Adaboost在形式上也是基模型$G(x)$与系数$\alpha$构成的加法模型，即：
-$$f(x)=\sum \limits _{m=1}^M \alpha _m G _m(x)$$
-其损失函数为指数损失函数，即：
-$$L(y,f(x)) = exp(-yf(x))$$</p>
+<p>令$w=(w_{original};b),x_i=(x_i;1)$，在逻辑斯蒂回归中，$h(x_i)=\frac{1}{1+e^{-(w^Tx_i)}}$将线性回归的结果映射到$(0,1)$上(Logisitic Distribution)，其值可视作样本为正类$1$的概率(置信度)；若$p(y_i|x_i)$表示样本$x_i$被预测正确的概率，则可重写为：$p(y_i|x_i)=h(x_i)^{y_i}· (1-h(x_i))^{1-y_i}$。</p>
 
-<p>我们需要推导的便是：</p>
+<p>假设样本之间独立，则样本集的似然函数为$\prod _{i=1}^nh(x_i)^{y_i}· (1-h(x_i))^{1-y_i}$，对数变换后得：$$L(w)=\sum _{i=1}^n y_i log\big(h(x_i)\big) +(1-y_i)log\big(1-h(x_i)\big)$$
+由极大似然法，优化目标为：$\min\limits_w (-L)$</p>
 
-<ul>
-<li>如何计算每一个$\alpha$？</li>
-<li>如何改变数据分布计算每一个$G$？</li>
-</ul>
+<h4 id="求解-似然函数可通过凸优化的方式求解-这里采用梯度下降法"><strong>求解</strong>：似然函数可通过凸优化的方式求解，这里采用梯度下降法。</h4>
 
-<p>$$$$</p>
-
-<p>假设经过$m-1$轮前向分步迭代已经求得$f _{m-1}(x)=\alpha _1 G _1(x) + &hellip; + \alpha _{m-1} G _{m-1}(x)$，由前向分步算法，可知：</p>
-
-<p>\begin{equation}\begin{split}
-(\alpha _m,G _m(x)) &amp;= arg \min \limits _{\alpha,G}   \sum \limits _{i=1}^N exp\left(  -y _i(f _{m-1}(x _i)+\alpha G(x _i)) \right) \\<br />
-&amp;= arg \min \limits _{\alpha,G}   \sum \limits _{i=1}^N w _{m _i}exp\left( -y _i \alpha G(x _i) \right)
-\end{split}\end{equation}
-其中$w _{mi}=exp(-y _i f _{m-1}(x _i))$可以理解为第m个模型对于第i个样本的权值，用于修正训练数据分布；</p>
-
-<p>对于上式，由于$\alpha$只是一个系数且$w _{mi}$与本次迭代无关，因此可以先计算最优的$G _m^{*}(x)$，由下式得到：
-$$G _m^{*}(x)=arg \min \limits _G \sum \limits _{i=1}^N w _{mi}I(y _i \neq G(x _i))$$</p>
-
-<p>之后求最优$\alpha ^{*}_m$，如下（<u>最后一个式子拆开分解成第二个式子更容易理解</u>）：</p>
-
-<p>\begin{equation}\begin{split}
-\sum \limits _{i=1}^N w _{mi} exp\left( -y _i\alpha G(x _i) \right) &amp;=  \sum \limits _{y _i = G _m(x _i)} w _{mi} e^{-\alpha} + \sum \limits _{y _i \neq G _m(x _i)} w _{mi} e ^{\alpha} \\<br />
-&amp;= (e ^{\alpha} - e ^{-\alpha})\sum \limits _{i=1}^N w _{mi} I(y _i \neq G(x _i)) + e ^{-\alpha}\sum \limits _{i=1}^N w _{mi}
+<p>不妨设$z = w^Tx_i$，对于参数$w_j$，计算偏导为：
+\begin{equation}\begin{split}
+\frac{\partial{(-L)}}{\partial w_j}&amp;=-\sum _{i=1}^n x_i^j·\frac{e^{-z}}{(1+e^{-z})^2} · \big( \frac{y _i}{h(x_i)} - \frac{1-y _i}{1-h(x_i)}  \big) \\<br />
+&amp;=-\sum _{i=1}^n x_i^j·\frac{e^{-z}}{(1+e^{-z})^2} · \big( y _i(1+e^{-z}) - \frac{(1-y _i)(1+e^{-z})}{e^{-z}} \big)\\<br />
+&amp; = -\sum _{i=1}^n x_i^j·\frac{e^{-z}}{1+e^{-z}} · (y _i - \frac{1-y _i}{e^{-z}}) \\<br />
+&amp; = -\sum _{i=1}^n x_i^j· \big[  (1-h(x_i))y_i - h(x_i)(1-y _i)  \big] \\<br />
+&amp; = \sum _{i=1}^n x_i^j (h(x_i)-y_i)
 \end{split}\end{equation}</p>
 
-<p>对$\alpha$求偏导并置零，将$G _m^{*}(x)$代入，可得：
-$$\alpha _m^{*} = \frac{1}{2}log\frac{1-e _m}{e _m}$$
-其中$e _m$是分类误差率：
-$$e _m = \frac{\sum \limits _{i=1}^N w _{mi}I(y _i \neq G _m(x _i))}{\sum \limits _{i=1}^N w _{mi}} = \sum \limits _{i=1}^N I(y _i \neq G _m(x _i))$$</p>
-
-<p>而样本分布修正因子$w _{m+1,i}$也可以通过下式获得：
-$$w _{m+1,i} = exp(-y _i f _{m}(x _i)) = w _{mi} exp(-y _i \alpha _m^{*}G _m^{*}(x))$$</p>
+<p>若学习率为$\alpha$，则每次迭代后：$$w _j = w _j - \alpha ·  \frac{\partial{(-L)}}{\partial w_j}$$</p>
 
 <hr />
 
 <h4 id="参考资料">参考资料：</h4>
 
 <ol>
+<li>《机器学习》，周志华，清华大学出版社，2017</li>
 <li>《统计学习方法》，李航，清华大学出版社，2012</li>
 </ol>
 
-  </div>
-
-  <div id=links>
+    </div>
+    <div id=links>
+        
+        <a class="basic-alignment left" href="https://hellosilicat.github.io/posts/confusion/">&laquo; Confusion Matrix and Measurement</a>
+        
+        
+        <a class="basic-alignment left" href="https://hellosilicat.github.io/posts/dt-rf/">Decision Tree and Random Forest &raquo;</a>
+        
+    </div>
     
-      <a class="basic-alignment left" href="https://hellosilicat.github.io/post/hbase/">&laquo; Single Node HBase: Build with Aliyun ECS</a>
     
-    
-  </div>
 </section>
-
   
 </body>
 </html>
-
-
-

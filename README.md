@@ -1,2 +1,0 @@
-# hellosilicat.github.io
-blog
