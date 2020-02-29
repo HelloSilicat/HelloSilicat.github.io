@@ -3,33 +3,39 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://hellosilicat.github.io/about/</loc>
-    <lastmod>2020-01-01T12:05:33+08:00</lastmod>
+    <loc>https://hellosilicat.github.io/life/</loc>
+    <lastmod>2020-02-29T18:50:56+08:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://hellosilicat.github.io/</loc>
+    <lastmod>2020-02-29T18:50:56+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hellosilicat.github.io/life/test/</loc>
+    <lastmod>2020-02-29T18:50:56+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hellosilicat.github.io/posts/hugo-new-page/</loc>
+    <lastmod>2020-02-29T18:40:44+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hellosilicat.github.io/posts/</loc>
+    <lastmod>2020-02-29T18:40:44+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hellosilicat.github.io/about/</loc>
     <lastmod>2020-01-01T12:05:33+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://hellosilicat.github.io/posts/adaboost/</loc>
     <lastmod>2019-12-28T15:26:46+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://hellosilicat.github.io/posts/</loc>
-    <lastmod>2019-12-28T15:26:46+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://hellosilicat.github.io/experience/</loc>
-    <lastmod>2019-11-04T12:50:00+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://hellosilicat.github.io/experience/hbase/</loc>
-    <lastmod>2019-11-04T12:50:00+08:00</lastmod>
   </url>
   
   <url>

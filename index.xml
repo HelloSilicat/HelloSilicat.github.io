@@ -6,10 +6,36 @@
     <description>Recent content on Jialiang Pei</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 01 Jan 2020 12:05:33 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 29 Feb 2020 18:50:56 +0800</lastBuildDate>
     
 	<atom:link href="https://hellosilicat.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Test</title>
+      <link>https://hellosilicat.github.io/life/test/</link>
+      <pubDate>Sat, 29 Feb 2020 18:50:56 +0800</pubDate>
+      
+      <guid>https://hellosilicat.github.io/life/test/</guid>
+      <description>分页测试。</description>
+    </item>
+    
+    <item>
+      <title>Create a New Customed Page in Hugo</title>
+      <link>https://hellosilicat.github.io/posts/hugo-new-page/</link>
+      <pubDate>Sat, 29 Feb 2020 18:40:44 +0800</pubDate>
+      
+      <guid>https://hellosilicat.github.io/posts/hugo-new-page/</guid>
+      <description> 之前的博客改造计划尚未结束，进行到文章分类步骤。Hugo官方提供了category/tag功能，即posts页面展示所有文章，category/tag页面展示分类/标签链接，但是我想要不同分类的文章独立在不同页面。在官方文档挣扎许久，最终针对black&amp;amp;white主题摸索出如下方案。（只创建了一个Life新页面，Sci&amp;amp;Tech采用默认页面）
+
+Step1. hugo的content文件夹存放markdown文档，其目录结构对应域名结构，例如 content/xxx/yyy.md 文章对应 root:/xxx/yyy 页面，因此为了创建Life(自定义)页面，首先创建 content/life 文件夹，在该文件夹内创建_index.md(文件名不能错)文件，空的即可；
+Step2. 之后创建 themes/xxx/layout/section 文件夹，在该文件夹里编写life.html，此处文件名需要和 content/life/ 对应，该文件内容可复制 *themes/xxx/layout/index.html*；
+Step3. 为每一篇markdown文章添加type=&amp;quot;xxx&amp;quot;参数，例如Sci&amp;amp;Tech类文章是tech，而Life类文章是life，之后不同类的文章要指定type并且放到对应的content文件夹下；
+Step4. 修改 themes/xxx/layout/index.html 和 themes/xxx/layout/section/life.html 模板参数，即 {{range where .Site.RegularPages &amp;quot;Params.type&amp;quot; &amp;quot;==&amp;quot; &amp;quot;ccc&amp;quot;}} ccc部分分别填tech和life。
+
+这是针对Black&amp;amp;White主题的，具体步骤不适合其他主题，关键部分(content文件夹、layout/section/文件夹、_index.xxx文件、type参数与template用法)应该比较通用。
+参考资料：  Hugo Variable Hugo Content Section  </description>
+    </item>
     
     <item>
       <title>About</title>
@@ -17,7 +43,10 @@
       <pubDate>Wed, 01 Jan 2020 12:05:33 +0800</pubDate>
       
       <guid>https://hellosilicat.github.io/about/</guid>
-      <description>hello</description>
+      <description>Hi. I&amp;rsquo;m a Senior student at School of Computer Science in Beijing University of Posts and Telecommunications, majoring in Computer Science and Technology.
+I write the blog for two reasons: collect the past(Life) and make convenience for future(Sci &amp;amp; Tech). If the third reason exists, I hope it&amp;rsquo;s for sharing something useful with you :)
+I maintain a github account and you can contact me through email peijl@bupt.edu.cn. 
+My experiences are as follow.</description>
     </item>
     
     <item>
@@ -33,15 +62,6 @@
 1. 前向分步算法 求解加法模型的全局最优解是一个复杂的优化问题，在计算上难度大，因此前向分步算法试图使用贪心策略，迭代式地计算每一个基函数，每一次迭代都去获取局部最优解，描述如下。
 设前$m-1$次计算的加法模型为： $$f _{m-1}(x)=\sum \limits _{i=1}^{m-1} \beta _ib(x;\gamma _i)$$
 则第$m$次优化目标为： $$(\beta _m, \gamma _m)=arg \min \limits _{\beta, \gamma} \sum \limits _{i=1}^N L \left( y _i, f _{m-1}(x _i) + \beta b(x _i;\gamma) \right)$$</description>
-    </item>
-    
-    <item>
-      <title>Single Node HBase: Build with Aliyun ECS</title>
-      <link>https://hellosilicat.github.io/experience/hbase/</link>
-      <pubDate>Mon, 04 Nov 2019 12:50:00 +0800</pubDate>
-      
-      <guid>https://hellosilicat.github.io/experience/hbase/</guid>
-      <description>0. Tips  Single Node means that I only have one Aliyun ECS.(1vCPU/2 GB/CentOS7) In hosts file, use private IP. You can get it from Aliyun Console The version of JDK, Hadoop and HBase must be compatible. (Google it!) If some process are not started, read the logs and find the errors(xxx/logs/xxx.log) If some paths are not existed, mkdir them Configure with private IP but visit from public IP  1.</description>
     </item>
     
     <item>

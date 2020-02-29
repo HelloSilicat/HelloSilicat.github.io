@@ -6,10 +6,27 @@
     <description>Recent content in Posts on Jialiang Pei</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 28 Dec 2019 15:26:46 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 29 Feb 2020 18:40:44 +0800</lastBuildDate>
     
 	<atom:link href="https://hellosilicat.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Create a New Customed Page in Hugo</title>
+      <link>https://hellosilicat.github.io/posts/hugo-new-page/</link>
+      <pubDate>Sat, 29 Feb 2020 18:40:44 +0800</pubDate>
+      
+      <guid>https://hellosilicat.github.io/posts/hugo-new-page/</guid>
+      <description> 之前的博客改造计划尚未结束，进行到文章分类步骤。Hugo官方提供了category/tag功能，即posts页面展示所有文章，category/tag页面展示分类/标签链接，但是我想要不同分类的文章独立在不同页面。在官方文档挣扎许久，最终针对black&amp;amp;white主题摸索出如下方案。（只创建了一个Life新页面，Sci&amp;amp;Tech采用默认页面）
+
+Step1. hugo的content文件夹存放markdown文档，其目录结构对应域名结构，例如 content/xxx/yyy.md 文章对应 root:/xxx/yyy 页面，因此为了创建Life(自定义)页面，首先创建 content/life 文件夹，在该文件夹内创建_index.md(文件名不能错)文件，空的即可；
+Step2. 之后创建 themes/xxx/layout/section 文件夹，在该文件夹里编写life.html，此处文件名需要和 content/life/ 对应，该文件内容可复制 *themes/xxx/layout/index.html*；
+Step3. 为每一篇markdown文章添加type=&amp;quot;xxx&amp;quot;参数，例如Sci&amp;amp;Tech类文章是tech，而Life类文章是life，之后不同类的文章要指定type并且放到对应的content文件夹下；
+Step4. 修改 themes/xxx/layout/index.html 和 themes/xxx/layout/section/life.html 模板参数，即 {{range where .Site.RegularPages &amp;quot;Params.type&amp;quot; &amp;quot;==&amp;quot; &amp;quot;ccc&amp;quot;}} ccc部分分别填tech和life。
+
+这是针对Black&amp;amp;White主题的，具体步骤不适合其他主题，关键部分(content文件夹、layout/section/文件夹、_index.xxx文件、type参数与template用法)应该比较通用。
+参考资料：  Hugo Variable Hugo Content Section  </description>
+    </item>
     
     <item>
       <title>Additive Model and Adaboost</title>

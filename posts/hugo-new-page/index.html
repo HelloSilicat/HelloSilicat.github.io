@@ -18,10 +18,10 @@
     <title>
       
       
-         About 
+         Create a New Customed Page in Hugo 
       
     </title>
-    <link rel="canonical" href="https://hellosilicat.github.io/about/">
+    <link rel="canonical" href="https://hellosilicat.github.io/posts/hugo-new-page/">
 	<script type="text/javascript"
   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
@@ -527,21 +527,32 @@ dl {
     
     <hr />
     <div class="entry-content">
-        <p>Hi. I&rsquo;m a Senior student at School of Computer Science  in <a href="https://english.bupt.edu.cn/">Beijing University of Posts and Telecommunications</a>, majoring in Computer Science and Technology.</p>
+        
 
-<p>I write the blog for two reasons: collect the past(<a href="/life/">Life</a>) and make convenience for future(<a href="/tech/">Sci &amp; Tech</a>). If the third reason exists, I hope it&rsquo;s for sharing something useful with you :)</p>
+<p>之前的博客改造计划尚未结束，进行到文章分类步骤。Hugo官方提供了<code>category/tag</code>功能，即<code>posts</code>页面展示所有文章，<code>category/tag</code>页面展示分类/标签链接，但是我想要不同分类的文章独立在不同页面。在官方文档挣扎许久，最终针对<strong>black&amp;white</strong>主题摸索出如下方案。（只创建了一个Life新页面，Sci&amp;Tech采用默认页面）</p>
 
-<p>I maintain a <a href="https://github.com/HelloSilicat">github account</a> and you can contact me through email <a href="mailto:peijl@bupt.edu.cn">peijl@bupt.edu.cn</a>.
-<br></br></p>
+<p><br /></p>
 
-<p>My experiences are as follow.</p>
+<p><strong>Step1.</strong> hugo的<code>content</code>文件夹存放markdown文档，其目录结构对应域名结构，例如 <em>content/xxx/yyy.md</em> 文章对应 <em>root:/xxx/yyy</em> 页面，因此为了创建<code>Life</code>(自定义)页面，首先创建 <em>content/life</em> 文件夹，在该文件夹内创建<code>_index.md</code>(文件名不能错)文件，空的即可；</p>
 
-<ul>
-<li><em>(Jan 2020 ~ Now)</em>: A software engineering intern at <a href="https://ailab.bytedance.com/">Bytedance AI Lab</a> for speech service engine part.</li>
-<li><em>(Apr 2019 ~ Aug 2019)</em>: A software engineering intern at Cloud &amp; Smart Industries
-Group in <a href="https://www.tencent.com/en-us/about.html">Tencent</a> for building a big-data real-time tracing system.</li>
-<li><em>( Apr 2018 ~ Feb 2019)</em>: A research intern at <a href="http://www.sei.pku.edu.cn/">Software Engineering Insisute, Peking University</a> for time-series classification.</li>
-</ul>
+<p><strong>Step2.</strong> 之后创建 <em>themes/xxx/layout/section</em> 文件夹，在该文件夹里编写<code>life.html</code>，此处文件名需要和 <em>content/life/</em> 对应，该文件内容可复制 *themes/xxx/layout/index.html*；</p>
+
+<p><strong>Step3.</strong> 为每一篇markdown文章添加<code>type=&quot;xxx&quot;</code>参数，例如<code>Sci&amp;Tech</code>类文章是<code>tech</code>，而<code>Life</code>类文章是<code>life</code>，之后不同类的文章要指定type并且放到对应的content文件夹下；</p>
+
+<p><strong>Step4.</strong> 修改 <em>themes/xxx/layout/index.html</em> 和 <em>themes/xxx/layout/section/life.html</em> 模板参数，即 <code>{{range where .Site.RegularPages &quot;Params.type&quot; &quot;==&quot; &quot;ccc&quot;}}</code> ccc部分分别填<code>tech</code>和<code>life</code>。</p>
+
+<p><br /></p>
+
+<p>这是针对Black&amp;White主题的，具体步骤不适合其他主题，关键部分(content文件夹、layout/section/文件夹、_index.xxx文件、type参数与template用法)应该比较通用。</p>
+
+<hr />
+
+<h4 id="参考资料">参考资料：</h4>
+
+<ol>
+<li><a href="https://gohugo.io/variables/">Hugo Variable</a></li>
+<li><a href="https://gohugo.io/content-management/sections/">Hugo Content Section</a></li>
+</ol>
 
     </div>
     
