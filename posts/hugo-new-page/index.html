@@ -1,533 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="HandheldFriendly" content="True">
-    <meta name="MobileOptimized" content="320">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="referrer" content="no-referrer">
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noodp"/>
+  
+  
+  
+  
+  <link rel="prev" href="https://hellosilicat.github.io/posts/adaboost/" />
+  
+  <link rel="canonical" href="https://hellosilicat.github.io/posts/hugo-new-page/" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <title>
+       
+       
+           Create a New Customed Page in Hugo | Jialiang Pei
+       
+  </title>
+  <meta name="title" content="Create a New Customed Page in Hugo | Jialiang Pei">
     
+  
+  <link rel="stylesheet" href="/font/iconfont.css">
+  <link rel="stylesheet" href="/css/main.min.css">
 
-    
 
-    <link rel="icon" type="image/png" href="/favicon_16x16.png" sizes="16x16">
-    <link rel="icon" type="image/png" href="/favicon_32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="/favicon_128x128.png" sizes="128x128">
+  
+  
+ 
 
-    <title>
-      
-      
-         Create a New Customed Page in Hugo 
-      
-    </title>
-    <link rel="canonical" href="https://hellosilicat.github.io/posts/hugo-new-page/">
-	<script type="text/javascript"
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+<script type="application/ld+json">
+ "@context" : "http://schema.org",
+    "@type" : "BlogPosting",
+    "mainEntityOfPage": {
+         "@type": "WebPage",
+         "@id": "https:\/\/hellosilicat.github.io\/"
+    },
+    "articleSection" : "posts",
+    "name" : "Create a New Customed Page in Hugo",
+    "headline" : "Create a New Customed Page in Hugo",
+    "description" : " 之前的博客改造计划尚未结束，进行到文章分类步骤。Hugo官方提供了category\/tag功能，即posts页面展示所有文章，category\/tag页面展示分类\/标签链接，但是我想要不同分类的文章独立在不同页面。在官方文档挣扎许久，最终针对black\x26amp;white主题摸索出如下方案。（只创建了一个Life新页面，Sci\x26amp;Tech采用默认页面）\n\nStep1. hugo的content文件夹存放markdown文档，其目录结构对应域名结构，例如 content\/xxx\/yyy.md 文章对应 root:\/xxx\/yyy 页面，因此为了创建Life(自定义)页面，首先创建 content\/life 文件夹，在该文件夹内创建_index.md(文件名不能错)文件，空的即可；\nStep2. 之后创建 themes\/xxx\/layout\/section 文件夹，在该文件夹里编写life.html，此处文件名需要和 content\/life\/ 对应，该文件内容可复制 *themes\/xxx\/layout\/index.html*；\nStep3. 为每一篇markdown文章添加type=\x26quot;xxx\x26quot;参数，例如Sci\x26amp;Tech类文章是tech，而Life类文章是life，之后不同类的文章要指定type并且放到对应的content文件夹下；\nStep4. 修改 themes\/xxx\/layout\/index.html 和 themes\/xxx\/layout\/section\/life.html 模板参数，即 {{range where .Site.RegularPages \x26quot;Params.type\x26quot; \x26quot;==\x26quot; \x26quot;ccc\x26quot;}} ccc部分分别填tech和life。\n\n这是针对Black\x26amp;White主题的，具体步骤不适合其他主题，关键部分(content文件夹、layout\/section\/文件夹、_index.xxx文件、type参数与template用法)应该比较通用。\n参考资料：  Hugo Variable Hugo Content Section  ",
+    "inLanguage" : "en",
+    "author" : "",
+    "creator" : "",
+    "publisher": "",
+    "accountablePerson" : "",
+    "copyrightHolder" : "",
+    "copyrightYear" : "2020",
+    "datePublished": "2020-02-29 18:40:44 \x2b0800 CST",
+    "dateModified" : "2020-02-29 18:40:44 \x2b0800 CST",
+    "url" : "https:\/\/hellosilicat.github.io\/posts\/hugo-new-page\/",
+    "wordCount" : "38",
+    "keywords" : [  "Jialiang Pei"]
+}
 </script>
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  tex2jax: {
-    inlineMath: [['$','$'], ['\\(','\\)']],
-    displayMath: [['$$','$$'], ['\[','\]']],
-    processEscapes: true,
-    processEnvironments: true,
-    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-    TeX: { equationNumbers: { autoNumber: "AMS" },
-         extensions: ["AMSmath.js", "AMSsymbols.js"] }
-  }
-});
-</script>
-
-	
-    <style>
-* {
-    border: 0;
-    font: inherit;
-    font-size: 100%;
-    vertical-align: baseline;
-    margin: 0;
-    padding: 0;
-    color: black;
-    text-decoration-skip: ink;
-}
-
-.round_avatar {
-    width: 63px;
-    height: 63px;
-    display: flex;
-    border-radius: 50%;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
-
-body {
-    font-family: 'century gothic', 'texgyreadventor', 'stheiti', 'Times New Roman', 'Open Sans', 'Myriad Pro', Myriad, sans-serif;
-    font-size: 17px;
-    line-height: 140%;
-    color: #1d1313;
-    max-width: 700px;
-    margin: auto;
-    padding: 0px;
-}
-
-table {
-    display: table;
-    border-collapse: separate;
-    border-spacing: 2px;
-    border-color: black;
-    border: 1px;
-}
-
-p {
-    margin: 20px 0;
-}
-
-a img {
-    border: none;
-}
-
-img {
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 1px;
-    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.5);
-    margin: 15px auto 15px auto;
-    max-width: 100%;
-    display: block;
-}
-
-.left-justify {
-    float: left;
-}
-
-.right-justify {
-    float: right;
-}
-
-pre,
-code {
-    font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
-    background-color: #f7f7f7;
-}
-
-code {
-    font-size: 12px;
-    padding: 0px;
-}
-
-pre {
-    margin-top: 0;
-    margin-bottom: 16px;
-    word-wrap: normal;
-    padding: 16px;
-    overflow: auto;
-    font-size: 85%;
-    line-height: 1.45;
-}
-
-pre>code {
-    padding: 0;
-    margin: 0;
-    font-size: 100%;
-    word-break: normal;
-    white-space: pre;
-    background: transparent;
-    border: 0;
-}
-
-pre code {
-    display: inline;
-    max-width: auto;
-    padding: 0;
-    margin: 0;
-    overflow: visible;
-    line-height: inherit;
-    word-wrap: normal;
-    background-color: transparent;
-    border: 0;
-}
-
-pre code::before,
-pre code::after {
-    content: normal;
-}
-
-em,
-q,
-em,
-dfn {
-    font-style: italic;
-}
-
-.sans,
-html .gist .gist-file .gist-meta {
-    font-family: "Open Sans", "Myriad Pro", Myriad, sans-serif;
-}
-
-.mono,
-pre,
-code,
-tt,
-p code,
-li code {
-    font-family: Menlo, Monaco, "Andale Mono", "lucida console", "Courier New", monospace;
-}
-
-.heading,
-.serif,
-h1,
-h2,
-h3 {
-    font-family: "KaTeX_Main", "Times New Roman", "Old Standard TT", serif;
-}
-
-strong {
-    font-weight: 600;
-}
-
-q:before {
-    content: "\201C";
-}
-
-q:after {
-    content: "\201D";
-}
-
-del,
-s {
-    text-decoration: line-through;
-}
-
-blockquote {
-    font-family: "Old Standard TT", serif;
-    text-align: center;
-    padding: 10px;
-}
-
-blockquote p {
-    display: inline-block;
-    font-style: italic;
-}
-
-blockquote:before,
-blockquote:after {
-    font-family: "Old Standard TT", serif;
-    content: '\201C';
-    font-size: 35px;
-    color: #403c3b;
-}
-
-blockquote:after {
-    content: '\201D';
-}
-
-
-hr {
-    width: 100%;
-    height: 1px;
-    margin: 25px auto;
-    border-top: 1px dashed grey;
-}
-
-h1 {
-    font-size: 35px;
-}
-
-h2 {
-    font-size: 28px;
-}
-
-h3 {
-    font-size: 1.3em;
-    font-weight: bold;
-    margin-top: 18px;
-    margin-bottom: 5px;
-}
-
-h1 a,
-h2 a,
-h3 a {
-    text-decoration: none;
-}
-
-h1,
-h2 {
-    margin-top: 28px;
-}
-
-#sub-header,
-time {
-    color: #403c3b;
-    font-size: 13px;
-}
-
-#sub-header {
-    margin: 0 4px;
-}
-
-#nav h1 a {
-    font-size: 1em;
-    color: #1d1313;
-    line-height: 100%;
-}
-
-.posts_listing a {
-    border-bottom: 1px dashed grey;
-    text-decoration: none;
-}
-
-#nav a {
-    text-decoration: none;
-}
-
-li {
-    margin-left: 20px;
-}
-
-ul li {
-    margin-left: 5px;
-}
-
-ul li {
-    list-style-type: none;
-}
-
-ul li:before {
-    content: "\00BB \0020";
-}
-
-#nav ul li:before,
-.posts_listing li:before {
-    content: '';
-    margin-right: 0;
-}
-
-#content {
-    text-align: left;
-    width: 100%;
-    font-size: 15px;
-    padding: 0px 0 80px;
-}
-
-#content h1,
-#content h2 {
-    margin-bottom: 5px;
-}
-
-#content h2 {
-    font-size: 25px;
-}
-
-#content .entry-content {
-    line-height: 120%;
-    margin-top: 15px;
-}
-
-.entry-content p {
-    margin-top: 0;
-    margin-bottom: 2px;
-    text-indent: 2rem;
-}
-
-.entry-content blockquote {
-    text-indent: 0rem;
-}
-
-.entry-content ul,
-ol,
-dl {
-    margin-left: 1rem;
-}
-
-#content time {
-    margin-left: 3px;
-}
-
-#content h1 {
-    font-size: 30px;
-}
-
-.highlight {
-    margin: 10px 0;
-}
-
-.posts_listing {
-    margin: 0 0 50px;
-}
-
-.posts_listing li {
-    margin: 0 0 25px 15px;
-}
-
-.posts_listing td a:hover {
-    text-decoration: none;
-    border-bottom: none;
-}
-
-#nav a:hover {
-    text-decoration: none;
-}
-
-#nav {
-    text-align: center;
-    position: static;
-    margin-top: 0px;
-    padding-top: 0px;
-}
-
-#nav ul {
-    display: table;
-    margin: 8px auto 0 auto;
-}
-
-#nav li {
-    list-style-type: none;
-    display: table-cell;
-    font-size: 15px;
-    padding: 0 20px;
-}
-
-#links {
-    margin: 50px 0 0 0;
-}
-
-#links :nth-child(2) {
-    float: right;
-}
-
-#not-found {
-    text-align: center;
-}
-
-#not-found a {
-    font-family: "Old Standard TT", serif;
-    font-size: 200px;
-    text-decoration: none;
-    display: inline-block;
-    padding-top: 225px;
-}
-
-@media (max-width: 750px) {
-    body {
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-
-    #nav h1 a {
-        font-size: 28px;
-    }
-
-    #nav li {
-        font-size: 13px;
-        padding: 0 15px;
-    }
-
-    #content {
-        margin-top: 0;
-        padding-top: 50px;
-        font-size: 14px;
-    }
-
-    #content h1 {
-        font-size: 25px;
-    }
-
-    #content h2 {
-        font-size: 22px;
-    }
-
-    .posts_listing li div {
-        font-size: 12px;
-    }
-}
-
-@media (max-width: 400px) {
-    body {
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-
-    #nav h1 a {
-        font-size: 22px;
-    }
-
-    #nav li {
-        font-size: 12px;
-        padding: 0 10px;
-    }
-
-    #content {
-        margin-top: 0;
-        padding-top: 20px;
-        font-size: 12px;
-    }
-
-    #content h1 {
-        font-size: 20px;
-    }
-
-    #content h2 {
-        font-size: 18px;
-    }
-
-    .posts_listing li div {
-        font-size: 12px;
-    }
-}
-
-@media (prefers-color-scheme: dark) {
-
-    *,
-    #nav h1 a {
-        color: #FDFDFD;
-    }
-
-    body {
-        background: #121212;
-    }
-
-    pre,
-    code {
-        background-color: #262626;
-    }
-
-    #sub-header,
-    time {
-        color: #BABABA;
-    }
-
-    hr {
-        background: #EBEBEB;
-    }
-}
-</style>
-
-
-    
-  </head>
-
-<body>
-    <section id=nav>
-        <a href="/"><img src="/avatar.jpg" class="round_avatar" alt=""></a>
-        <ul>
-            
-            <li><a href="/about/">About</a></li>
-            
-            <li><a href="/life/">Life</a></li>
-            
-            <li><a href="/">Sci &amp; Tech</a></li>
-            
-        </ul>
-    </section>
-
-<section id=content>
-    
-    <hr />
-    <div class="entry-content">
+</head>
+
+  
+
+
+  <body class="">
+    <div class="wrapper">
+        <nav class="navbar">
+    <div class="container">
+        <div class="navbar-header header-logo">
+        	<a href="javascript:void(0);" class="theme-switch"><i class="iconfont icon-xihuan"></i></a>&nbsp;<a href="https://hellosilicat.github.io/">Jialiang Pei</a>
+        </div>
+        <div class="menu navbar-right">
+                
+                
+                <a class="menu-item" href="/about/" title="">About</a>
+                
+                <a class="menu-item" href="/life/" title="">Life</a>
+                
+                <a class="menu-item" href="/" title="">Sci &amp; Tech</a>
+                
+        </div>
+    </div>
+</nav>
+<nav class="navbar-mobile" id="nav-mobile" style="display: none">
+     <div class="container">
+        <div class="navbar-header">
+            <div>  <a href="javascript:void(0);" class="theme-switch"><i class="iconfont icon-xihuan"></i></a>&nbsp;<a href="https://hellosilicat.github.io/">Jialiang Pei</a></div>
+            <div class="menu-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+     
+          <div class="menu" id="mobile-menu">
+                
+                
+                <a class="menu-item" href="/about/" title="">About</a>
+                
+                <a class="menu-item" href="/life/" title="">Life</a>
+                
+                <a class="menu-item" href="/" title="">Sci &amp; Tech</a>
+                
+        </div>
+    </div>
+</nav>
+    	 <main class="main">
+          <div class="container">
+      		
+<article class="post-warp" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Create a New Customed Page in Hugo</h1>
+        <div class="post-meta">
+                Written by <a itemprop="name" href="https://hellosilicat.github.io/" rel="author"></a> with ♥ 
+                <span class="post-time">
+                on <time datetime=2020-02-29 itemprop="datePublished">February 29, 2020</time>
+                </span>
+                in
+                
+        </div>
+    </header>
+    <div class="post-content">
         
+
+        
+
+        
+        
+     
+          
+          
+          
+
+          
+          
+          
+
+          
 
 <p>之前的博客改造计划尚未结束，进行到文章分类步骤。Hugo官方提供了<code>category/tag</code>功能，即<code>posts</code>页面展示所有文章，<code>category/tag</code>页面展示分类/标签链接，但是我想要不同分类的文章独立在不同页面。在官方文档挣扎许久，最终针对<strong>black&amp;white</strong>主题摸索出如下方案。（只创建了一个Life新页面，Sci&amp;Tech采用默认页面）</p>
 
@@ -555,10 +166,76 @@ dl {
 </ol>
 
     </div>
-    
-    
-    
-</section>
 
-</body>
+    <div class="post-copyright">
+            
+           
+             
+            <p class="copyright-item">
+                    <span>Link:</span>
+                    <a href=https://hellosilicat.github.io/posts/hugo-new-page/>https://hellosilicat.github.io/posts/hugo-new-page/</span>
+            </p>
+            
+            
+    </div>
+
+  
+    <div class="post-tags">
+        
+        <section>
+                <a href="javascript:window.history.back();">back</a></span> · 
+                <span><a href="https://hellosilicat.github.io/">home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+        
+        <a href="https://hellosilicat.github.io/posts/adaboost/" class="prev" rel="prev" title="Additive Model and Adaboost"><i class="iconfont icon-left"></i>&nbsp;Additive Model and Adaboost</a>
+         
+        
+    </div>
+
+    <div class="post-comment">
+          
+                 
+          
+    </div>
+</article>
+          </div>
+		   </main>
+      <footer class="footer">
+    <div class="copyright">
+        &copy;
+        
+        <span class="with-love">
+    	 <i class="iconfont icon-love"></i> 
+         </span>
+         
+
+         
+		  <span>Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow">Hugo</a> & <a href="https://github.com/liuzc/leaveit" target="_blank" rel="external nofollow">LeaveIt</a></span> 
+    </div>
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    <script src="/js/vendor_no_gallery.min.js" async=""></script>
+    
+  
+
+
+
+     </div>
+  </body>
 </html>
